@@ -6,6 +6,8 @@ public abstract class Block {
 		
 	protected int[][] shape;
 	protected Color color;
+	protected int centermoved_x;
+	protected int centermoved_y;
 	
 	public Block() {
 		shape = new int[][]{ 
@@ -13,8 +15,18 @@ public abstract class Block {
 				{1, 1}
 		};
 		color = Color.YELLOW;
+		centermoved_x = 0;
+		centermoved_y = 0;
 	}
-	
+
+	public int getCentermovedX() {
+		return centermoved_x;
+	}
+
+	public int getCentermovedY() {
+		return centermoved_y;
+	}
+
 	public int getShape(int x, int y) {
 		return shape[y][x];
 	}
@@ -24,7 +36,40 @@ public abstract class Block {
 	}
 	
 	public void rotate() {
+		int[][] rotate;
+		rotate = new int[width()][height()];
+		for(int i=0; i<rotate.length; i++){
+			for(int j=0; j<rotate[i].length; j++)
+			{
+				rotate[i][j] = shape[height()-1-j][i];
+				if(rotate[i][j] == 2){
+					centermoved_y = (height() -1 -j -i);
+					centermoved_x = (i - j);
+				}
+			}
+		}
+		shape = new int[rotate.length][rotate[0].length];
+		for(int i=0; i<rotate.length; i++){
+			for(int j=0; j<rotate[0].length; j++)
+				shape[i][j] = rotate[i][j];
+		}
+		//System.out.println(centermoved_x + " " + centermoved_y);
 		//Rotate the block 90 deg. clockwise.
+	}
+
+	public void canRotate() {
+		int[][] rotate;
+		rotate = new int[width()][height()];
+		for(int i=0; i<rotate.length; i++){
+			for(int j=0; j<rotate[i].length; j++)
+			{
+				rotate[i][j] = shape[height()-1-j][i];
+				if(rotate[i][j] == 2){
+					centermoved_y = (height() -1 -j -i);
+					centermoved_x = (i - j);
+				}
+			}
+		}
 	}
 	
 	public int height() {
