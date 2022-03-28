@@ -161,7 +161,7 @@ public class Board extends JFrame {
 	}
 
 	private Block getRandomBlock() {
-		Random rnd = new Random(System.currentTimeMillis());
+		Random rnd = new Random();
 		int block = rnd.nextInt(7);
 		switch(block) {
 		case 0:
@@ -203,6 +203,7 @@ public class Board extends JFrame {
 		StyledDocument doc = score_pane.getStyledDocument();
 		SimpleAttributeSet styles = new SimpleAttributeSet();
 		StyleConstants.setForeground(styles, next_block.getColor());
+
 		//System.out.println("width : " + curr.width() + " height : " + curr.height());
 		for(int j=0; j<NEXT_HEIGHT; j++){
 			for(int i=0; i<NEXT_WIDTH; i++){
@@ -211,7 +212,7 @@ public class Board extends JFrame {
 		}
 		for(int j=1; j<next_block.height() + 1; j++){
 			for(int i=1; i<next_block.width() + 1; i++){
-				doc.setCharacterAttributes(0,6,styles,false);
+				doc.setCharacterAttributes(0,4,styles,false);
 				next_board[j][i] = next_block.getShape(i-1,j-1);
 			}
 		}
@@ -462,8 +463,9 @@ public class Board extends JFrame {
 		}
 		score_pane.setText(sb.toString());
 		StyledDocument doc = score_pane.getStyledDocument();
-		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+		doc.setParagraphAttributes(0, doc.getLength(), styleSet, true);
 		score_pane.setStyledDocument(doc);
+		score_pane.setForeground(curr.getColor());
 	}
 
 	protected void moveCenter() {
