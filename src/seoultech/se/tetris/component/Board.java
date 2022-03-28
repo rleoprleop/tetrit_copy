@@ -65,6 +65,7 @@ public class Board extends JFrame {
 	public Board() {
 		super("SeoulTech SE Tetris");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(500, 600);
 
 		this.setLayout(new GridLayout(1,2,10,0));
 		main_panel = new JPanel();
@@ -115,6 +116,7 @@ public class Board extends JFrame {
 		StyleConstants.setForeground(styleSet, Color.WHITE);
 		StyleConstants.setAlignment(styleSet, StyleConstants.ALIGN_CENTER);
 
+		this.setVisible(true);
 		//Set timer for block drops.
 		timer = new Timer(initInterval, new ActionListener() {
 			@Override
