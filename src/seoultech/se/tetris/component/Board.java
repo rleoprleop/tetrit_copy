@@ -195,6 +195,7 @@ public class Board extends JFrame {
 		}
 		for(int j=1; j<next_block.height() + 1; j++){
 			for(int i=1; i<next_block.width() + 1; i++){
+				doc.setCharacterAttributes(0,6,styles,false);
 				next_board[j][i] = next_block.getShape(i-1,j-1);
 			}
 		}
