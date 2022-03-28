@@ -65,6 +65,10 @@ public class Board extends JFrame {
 	private static final int completed_block = 2;
 	private static final int empty_block = 0;
 
+	int sprint=0;
+	private static final int SPMAX=900;
+
+
 	public Board() {
 		super("SeoulTech SE Tetris");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -127,8 +131,14 @@ public class Board extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				moveDown();
 				drawBoard();
+				//System.out.println(timer.getDelay());
+				if(sprint>SPMAX){
+					sprint=SPMAX;
+				}
+				timer.setDelay(initInterval-sprint);
 			}
 		});
+
 
 		//Initialize board for the game.
 		board = new int[HEIGHT][WIDTH];
@@ -146,8 +156,12 @@ public class Board extends JFrame {
 		timer.start();
 	}
 
+	public void tempTask(){
+
+	}
+
 	private Block getRandomBlock() {
-		Random rnd = new Random(System.currentTimeMillis());
+		Random rnd = new Random();
 		int block = rnd.nextInt(7);
 		switch(block) {
 		case 0:
@@ -189,6 +203,7 @@ public class Board extends JFrame {
 		StyledDocument doc = score_pane.getStyledDocument();
 		SimpleAttributeSet styles = new SimpleAttributeSet();
 		StyleConstants.setForeground(styles, next_block.getColor());
+
 		//System.out.println("width : " + curr.width() + " height : " + curr.height());
 		for(int j=0; j<NEXT_HEIGHT; j++){
 			for(int i=0; i<NEXT_WIDTH; i++){
@@ -197,7 +212,7 @@ public class Board extends JFrame {
 		}
 		for(int j=1; j<next_block.height() + 1; j++){
 			for(int i=1; i<next_block.width() + 1; i++){
-				doc.setCharacterAttributes(0,6,styles,false);
+				doc.setCharacterAttributes(0,4,styles,false);
 				next_board[j][i] = next_block.getShape(i-1,j-1);
 			}
 		}
@@ -311,13 +326,17 @@ public class Board extends JFrame {
 					break;
 				}
 			}
-			if(canErase == true) {
+			if(canErase) {
 				score += 1;
+				sprint+=20;
 				for(int j = 0; j<WIDTH; j++) {
 					board[i][j] = 0;
 				}
 			}
 		}
+		//System.out.print(score);
+		//System.out.println(sprint);
+
 		for(int i = lowest; i>=0; i--){
 			down(i);
 		}
@@ -385,7 +404,7 @@ public class Board extends JFrame {
 	}
 
 	protected void pause() {
-		if(ispaused == false){
+		if(!ispaused){
 			ispaused = true;
 			timer.stop();
 		}
@@ -397,7 +416,7 @@ public class Board extends JFrame {
 	protected void harddrop(){
 		pause();
 		eraseCurr();
-		while(isBlocked('d') == false)
+		while(!isBlocked('d'))
 			y++;
 		placeBlock();
 		drawBoard();
@@ -444,8 +463,9 @@ public class Board extends JFrame {
 		}
 		score_pane.setText(sb.toString());
 		StyledDocument doc = score_pane.getStyledDocument();
-		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+		doc.setParagraphAttributes(0, doc.getLength(), styleSet, true);
 		score_pane.setStyledDocument(doc);
+		score_pane.setForeground(curr.getColor());
 	}
 
 	protected void moveCenter() {
