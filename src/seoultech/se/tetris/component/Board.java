@@ -32,6 +32,7 @@ public class Board extends JFrame {
 	public static final int HEIGHT = 20;
 	public static final int WIDTH = 10;
 	public static final int NEXT_WIDTH = 6;
+	public static final int NEXT_WIDTH = 5;
 	public static final int NEXT_HEIGHT = 3;
 	public static String BORDER_CHAR = "X";
 	public static char BLOCK_CHAR = 'O';
@@ -44,6 +45,7 @@ public class Board extends JFrame {
 	public static final String mac_BLANK_CHAR = " ";
 	
 	private JTextPane pane;
+	private JTextPane next_pane;
 	private JTextPane score_pane;
 	private JTextPane next_block_pane;
 	private JPanel main_panel;
@@ -104,6 +106,11 @@ public class Board extends JFrame {
 		main_panel.add(pane);
 		//this.getContentPane().add(game_pane, BorderLayout.WEST);
 
+		next_pane = new JTextPane();
+		next_pane.setEditable(false);
+		next_pane.setBackground(Color.BLACK);
+		next_pane.setBorder(border);
+
 		score_pane = new JTextPane();
 		score_pane.setEditable(false);
 		score_pane.setBackground(Color.BLACK);
@@ -111,6 +118,9 @@ public class Board extends JFrame {
 
 		side_panel = new JPanel();
 		side_panel.add(score_pane, new GridLayout(4,1));
+		side_panel.setLayout(new GridLayout(4,1,10,30));
+		side_panel.add(next_pane);
+		side_panel.add(score_pane);
 
 
 		this.add(main_panel);
@@ -191,6 +201,8 @@ public class Board extends JFrame {
 			int rows = y+j == 0 ? 0 : y+j-1;
 			int offset = rows * (WIDTH+3) + x + 1;
 			doc.setCharacterAttributes(offset, curr.width(), styles, true);
+			int rows = j;//y+j == 0 ? 0 : y+j-1;
+			int offset = x;//rows * (WIDTH+3) + x + 1;
 			for(int i=0; i<curr.width(); i++) {
 				if(board[y+j][x+i] == 0) //요게 히트!!! 보드에 0이 아니면 그대로 유지해야함
 					board[y + j][x + i] = curr.getShape(i, j);
@@ -427,6 +439,8 @@ public class Board extends JFrame {
 	public void drawBoard() {
 		StringBuffer sb = new StringBuffer();
 
+		StyledDocument doc = pane.getStyledDocument();
+		StyleConstants.setForeground(styleSet, Color.WHITE);
 		for(int t=0; t<WIDTH+2; t++) sb.append(BORDER_CHAR);
 		sb.append("\n");
 		for(int i=0; i < board.length; i++) {
@@ -434,6 +448,9 @@ public class Board extends JFrame {
 			for(int j=0; j < board[i].length; j++) {
 				if(board[i][j] != 0) {
 					sb.append(BLOCK_CHAR);
+					StyleConstants.setForeground(styleSet, curr.getColor());
+					doc.setParagraphAttributes(0, 1, styleSet, false);
+					StyleConstants.setForeground(styleSet, Color.WHITE);
 				} else {
 					sb.append(BLANK_CHAR);
 				}
@@ -447,10 +464,25 @@ public class Board extends JFrame {
 		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
 		pane.setStyledDocument(doc);
 		draw_next();
+		draw_score();
+	}
+
+	public void draw_score() {
+		StyledDocument doc = score_pane.getStyledDocument();
+		StyleConstants.setForeground(styleSet, Color.WHITE);
+		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+		StringBuffer sb = new StringBuffer();
+		sb.append("\n");
+		sb.append(score);
+		score_pane.setText(sb.toString());
+		score_pane.setStyledDocument(doc);
 	}
 
 	public void draw_next(){
 		StringBuffer sb = new StringBuffer();
+		StyledDocument doc = next_pane.getStyledDocument();
+		StyleConstants.setForeground(styleSet, next_block.getColor());
+		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
 		for(int i=0; i < NEXT_HEIGHT; i++) {
 			for(int j=0; j < NEXT_WIDTH; j++) {
 				if(next_board[i][j] != 0) {
@@ -466,6 +498,8 @@ public class Board extends JFrame {
 		doc.setParagraphAttributes(0, doc.getLength(), styleSet, true);
 		score_pane.setStyledDocument(doc);
 		score_pane.setForeground(curr.getColor());
+		next_pane.setText(sb.toString());
+		next_pane.setStyledDocument(doc);
 	}
 
 	protected void moveCenter() {
@@ -475,6 +509,8 @@ public class Board extends JFrame {
 
 	public void reset() {
 		this.board = new int[20][10];
+		score = 0;
+		sprint = 0;
 		drawBoard();
 	}
 
