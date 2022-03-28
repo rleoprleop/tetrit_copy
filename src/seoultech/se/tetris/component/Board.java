@@ -31,6 +31,8 @@ public class Board extends JFrame {
 	
 	public static final int HEIGHT = 20;
 	public static final int WIDTH = 10;
+	public static final int NEXT_WIDTH = 6;
+	public static final int NEXT_HEIGHT = 3;
 	public static String BORDER_CHAR = "X";
 	public static char BLOCK_CHAR = 'O';
 	public static String BLANK_CHAR = " ";
@@ -47,6 +49,7 @@ public class Board extends JFrame {
 	private JPanel main_panel;
 	private JPanel side_panel;
 	private int[][] board;
+	private int[][] next_board;
 	private KeyListener playerKeyListener;
 	private SimpleAttributeSet styleSet;
 	private Timer timer;
@@ -98,7 +101,8 @@ public class Board extends JFrame {
 
 		score_pane = new JTextPane();
 		score_pane.setEditable(false);
-		score_pane.setBackground(Color.GRAY);
+		score_pane.setBackground(Color.BLACK);
+		score_pane.setBorder(border);
 
 		side_panel = new JPanel();
 		side_panel.add(score_pane, new GridLayout(4,1));
@@ -126,6 +130,7 @@ public class Board extends JFrame {
 
 		//Initialize board for the game.
 		board = new int[HEIGHT][WIDTH];
+		next_board = new int[NEXT_HEIGHT][NEXT_WIDTH];
 		playerKeyListener = new PlayerKeyListener();
 		addKeyListener(playerKeyListener);
 		setFocusable(true);
@@ -173,6 +178,24 @@ public class Board extends JFrame {
 			for(int i=0; i<curr.width(); i++) {
 				if(board[y+j][x+i] == 0) //요게 히트!!! 보드에 0이 아니면 그대로 유지해야함
 					board[y + j][x + i] = curr.getShape(i, j);
+			}
+		}
+		placeNextBlock();
+	}
+
+	private void placeNextBlock() {
+		StyledDocument doc = score_pane.getStyledDocument();
+		SimpleAttributeSet styles = new SimpleAttributeSet();
+		StyleConstants.setForeground(styles, next_block.getColor());
+		//System.out.println("width : " + curr.width() + " height : " + curr.height());
+		for(int j=0; j<NEXT_HEIGHT; j++){
+			for(int i=0; i<NEXT_WIDTH; i++){
+				next_board[j][i] = 0;
+			}
+		}
+		for(int j=1; j<next_block.height() + 1; j++){
+			for(int i=1; i<next_block.width() + 1; i++){
+				next_board[j][i] = next_block.getShape(i-1,j-1);
 			}
 		}
 	}
@@ -406,32 +429,16 @@ public class Board extends JFrame {
 
 	public void draw_next(){
 		StringBuffer sb = new StringBuffer();
-		for(int t =0; t<WIDTH; t++) sb.append(BORDER_CHAR);
-		sb.append("\n");
-		sb.append(BORDER_CHAR);
-		for(int i=0; i<6; i++)	sb.append(BLANK_CHAR);
-		sb.append(BORDER_CHAR);
-		sb.append("\n");
-		for(int i=0; i < next_block.height(); i++) {
-			sb.append(BORDER_CHAR);
-			sb.append(BLANK_CHAR);
-			for(int j=0; j < next_block.width(); j++) {
-				if(next_block.getShape(j,i) != 0) {
+		for(int i=0; i < NEXT_HEIGHT; i++) {
+			for(int j=0; j < NEXT_WIDTH; j++) {
+				if(next_board[i][j] != 0) {
 					sb.append(BLOCK_CHAR);
 				} else {
 					sb.append(BLANK_CHAR);
 				}
 			}
-			for(int j=0; j< 4 - next_block.width(); j++)
-				sb.append(BLANK_CHAR);
-			sb.append(BORDER_CHAR);
 			sb.append("\n");
 		}
-		sb.append(BORDER_CHAR);
-		for(int i=0; i<6; i++)	sb.append(BLANK_CHAR);
-		sb.append(BORDER_CHAR);
-		sb.append("\n");
-		for(int t=0; t<WIDTH; t++) sb.append(BORDER_CHAR);
 		score_pane.setText(sb.toString());
 		StyledDocument doc = score_pane.getStyledDocument();
 		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
