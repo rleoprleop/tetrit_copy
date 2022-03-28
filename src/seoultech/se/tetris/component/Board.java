@@ -65,6 +65,10 @@ public class Board extends JFrame {
 	private static final int completed_block = 2;
 	private static final int empty_block = 0;
 
+	int sprint=0;
+	private static final int SPMAX=900;
+
+
 	public Board() {
 		super("SeoulTech SE Tetris");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -127,8 +131,14 @@ public class Board extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				moveDown();
 				drawBoard();
+				//System.out.println(timer.getDelay());
+				if(sprint>SPMAX){
+					sprint=SPMAX;
+				}
+				timer.setDelay(initInterval-sprint);
 			}
 		});
+
 
 		//Initialize board for the game.
 		board = new int[HEIGHT][WIDTH];
@@ -144,6 +154,10 @@ public class Board extends JFrame {
 		placeBlock();
 		drawBoard();
 		timer.start();
+	}
+
+	public void tempTask(){
+
 	}
 
 	private Block getRandomBlock() {
@@ -311,13 +325,17 @@ public class Board extends JFrame {
 					break;
 				}
 			}
-			if(canErase == true) {
+			if(canErase) {
 				score += 1;
+				sprint+=20;
 				for(int j = 0; j<WIDTH; j++) {
 					board[i][j] = 0;
 				}
 			}
 		}
+		//System.out.print(score);
+		//System.out.println(sprint);
+
 		for(int i = lowest; i>=0; i--){
 			down(i);
 		}
@@ -385,7 +403,7 @@ public class Board extends JFrame {
 	}
 
 	protected void pause() {
-		if(ispaused == false){
+		if(!ispaused){
 			ispaused = true;
 			timer.stop();
 		}
@@ -397,7 +415,7 @@ public class Board extends JFrame {
 	protected void harddrop(){
 		pause();
 		eraseCurr();
-		while(isBlocked('d') == false)
+		while(!isBlocked('d'))
 			y++;
 		placeBlock();
 		drawBoard();
