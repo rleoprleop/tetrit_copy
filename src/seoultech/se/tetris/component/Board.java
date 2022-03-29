@@ -50,6 +50,7 @@ public class Board extends JFrame {
 	private JPanel side_panel;
 	private int[][] board;
 	private int[][] next_board;
+	private Color[][] color_board;
 	private KeyListener playerKeyListener;
 	private SimpleAttributeSet styleSet;
 	private Timer timer;
@@ -151,6 +152,7 @@ public class Board extends JFrame {
 		//Initialize board for the game.
 		board = new int[HEIGHT][WIDTH];
 		next_board = new int[NEXT_HEIGHT][NEXT_WIDTH];
+		color_board = new Color[HEIGHT][WIDTH];
 		playerKeyListener = new PlayerKeyListener();
 		addKeyListener(playerKeyListener);
 		setFocusable(true);
@@ -195,8 +197,10 @@ public class Board extends JFrame {
 			int rows = j;//y+j == 0 ? 0 : y+j-1;
 			int offset = x;//rows * (WIDTH+3) + x + 1;
 			for(int i=0; i<curr.width(); i++) {
-				if(board[y+j][x+i] == 0) //요게 히트!!! 보드에 0이 아니면 그대로 유지해야함
+				if(board[y+j][x+i] == 0) {//요게 히트!!! 보드에 0이 아니면 그대로 유지해야함
 					board[y + j][x + i] = curr.getShape(i, j);
+					color_board[y+j][x+i] = curr.getColor();
+				}
 			}
 		}
 		placeNextBlock();
@@ -447,7 +451,7 @@ public class Board extends JFrame {
 				doc.insertString(doc.getLength(), BORDER_CHAR, styleSet);
 				for (int j = 0; j < board[i].length; j++) {
 					if (board[i][j] != 0) {
-						StyleConstants.setForeground(styleSet, curr.getColor());
+						StyleConstants.setForeground(styleSet, color_board[i][j]);
 						doc.insertString(doc.getLength(), BLOCK_CHAR, styleSet);
 						//sb.append(BLOCK_CHAR);
 						StyleConstants.setForeground(styleSet, Color.WHITE);
@@ -475,7 +479,7 @@ public class Board extends JFrame {
 		StyleConstants.setForeground(styleSet, Color.WHITE);
 		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
 		StringBuffer sb = new StringBuffer();
-		sb.append("\n");
+		sb.append("\nScore : ");
 		sb.append(score);
 		score_pane.setText(sb.toString());
 		score_pane.setStyledDocument(doc);
