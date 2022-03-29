@@ -544,14 +544,14 @@ public class Board extends JFrame {
 				break;
 			case 68:
 				harddrop();
-			case 80:
+			case KeyEvent.VK_ESCAPE:
 				pause();
 			}
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			
+
 		}
 	}
 	
