@@ -10,9 +10,7 @@ import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 
 import seoultech.se.tetris.blocks.Block;
 import seoultech.se.tetris.blocks.IBlock;
@@ -34,22 +32,25 @@ public class Board extends JFrame {
 	public static final int NEXT_WIDTH = 6;
 	public static final int NEXT_HEIGHT = 3;
 	public static String BORDER_CHAR = "X";
-	public static char BLOCK_CHAR = 'O';
+	public static String BLOCK_CHAR = "O";
 	public static String BLANK_CHAR = " ";
 	public static final String win_BORDER_CHAR = "X";
-	public static final char win_BLOCK_CHAR = 'O';
+	public static final String win_BLOCK_CHAR = "O";
 	public static final String win_BLANK_CHAR = "     ";
 	public static final String mac_BORDER_CHAR = "X";
-	public static final char mac_BLOCK_CHAR = 'O';
+	public static final String mac_BLOCK_CHAR = "O";
 	public static final String mac_BLANK_CHAR = " ";
-	
+	public static String os;
+
 	private JTextPane pane;
+	private JTextPane next_pane;
 	private JTextPane score_pane;
 	private JTextPane next_block_pane;
 	private JPanel main_panel;
 	private JPanel side_panel;
 	private int[][] board;
 	private int[][] next_board;
+	private Color[][] color_board;
 	private KeyListener playerKeyListener;
 	private SimpleAttributeSet styleSet;
 	private Timer timer;
@@ -78,7 +79,7 @@ public class Board extends JFrame {
 		main_panel = new JPanel();
 
 		// readOS
-		String os = System.getProperty("os.name").toLowerCase();
+		os = System.getProperty("os.name").toLowerCase();
 		//System.out.println(os);
 		if(os.contains("win")){
 			BORDER_CHAR = win_BORDER_CHAR;
@@ -104,6 +105,11 @@ public class Board extends JFrame {
 		main_panel.add(pane);
 		//this.getContentPane().add(game_pane, BorderLayout.WEST);
 
+		next_pane = new JTextPane();
+		next_pane.setEditable(false);
+		next_pane.setBackground(Color.BLACK);
+		next_pane.setBorder(border);
+
 		score_pane = new JTextPane();
 		score_pane.setEditable(false);
 		score_pane.setBackground(Color.BLACK);
@@ -111,6 +117,9 @@ public class Board extends JFrame {
 
 		side_panel = new JPanel();
 		side_panel.add(score_pane, new GridLayout(4,1));
+		side_panel.setLayout(new GridLayout(4,1,10,30));
+		side_panel.add(next_pane);
+		side_panel.add(score_pane);
 
 
 		this.add(main_panel);
@@ -143,6 +152,7 @@ public class Board extends JFrame {
 		//Initialize board for the game.
 		board = new int[HEIGHT][WIDTH];
 		next_board = new int[NEXT_HEIGHT][NEXT_WIDTH];
+		color_board = new Color[HEIGHT][WIDTH];
 		playerKeyListener = new PlayerKeyListener();
 		addKeyListener(playerKeyListener);
 		setFocusable(true);
@@ -157,7 +167,6 @@ public class Board extends JFrame {
 	}
 
 	public void tempTask(){
-
 	}
 
 	private Block getRandomBlock() {
@@ -183,26 +192,21 @@ public class Board extends JFrame {
 	}
 
 	private void placeBlock() {
-		StyledDocument doc = pane.getStyledDocument();
-		SimpleAttributeSet styles = new SimpleAttributeSet();
-		StyleConstants.setForeground(styles, curr.getColor());
 		//System.out.println("width : " + curr.width() + " height : " + curr.height());
 		for(int j=0; j<curr.height(); j++) {
-			int rows = y+j == 0 ? 0 : y+j-1;
-			int offset = rows * (WIDTH+3) + x + 1;
-			doc.setCharacterAttributes(offset, curr.width(), styles, true);
+			int rows = j;//y+j == 0 ? 0 : y+j-1;
+			int offset = x;//rows * (WIDTH+3) + x + 1;
 			for(int i=0; i<curr.width(); i++) {
-				if(board[y+j][x+i] == 0) //요게 히트!!! 보드에 0이 아니면 그대로 유지해야함
+				if(board[y+j][x+i] == 0) {//요게 히트!!! 보드에 0이 아니면 그대로 유지해야함
 					board[y + j][x + i] = curr.getShape(i, j);
+					color_board[y+j][x+i] = curr.getColor();
+				}
 			}
 		}
 		placeNextBlock();
 	}
 
 	private void placeNextBlock() {
-		StyledDocument doc = score_pane.getStyledDocument();
-		SimpleAttributeSet styles = new SimpleAttributeSet();
-		StyleConstants.setForeground(styles, next_block.getColor());
 
 		//System.out.println("width : " + curr.width() + " height : " + curr.height());
 		for(int j=0; j<NEXT_HEIGHT; j++){
@@ -212,7 +216,6 @@ public class Board extends JFrame {
 		}
 		for(int j=1; j<next_block.height() + 1; j++){
 			for(int i=1; i<next_block.width() + 1; i++){
-				doc.setCharacterAttributes(0,4,styles,false);
 				next_board[j][i] = next_block.getShape(i-1,j-1);
 			}
 		}
@@ -425,32 +428,68 @@ public class Board extends JFrame {
 	}
 
 	public void drawBoard() {
-		StringBuffer sb = new StringBuffer();
+		int win_extra_border = 4;
+		int mac_extra_border = 2;
+		int extra_border;
+		if(os.contains("win"))
+			extra_border = win_extra_border;
+		else
+			extra_border = mac_extra_border;
 
-		for(int t=0; t<WIDTH+2; t++) sb.append(BORDER_CHAR);
-		sb.append("\n");
-		for(int i=0; i < board.length; i++) {
-			sb.append(BORDER_CHAR);
-			for(int j=0; j < board[i].length; j++) {
-				if(board[i][j] != 0) {
-					sb.append(BLOCK_CHAR);
-				} else {
-					sb.append(BLANK_CHAR);
-				}
-			}
-			sb.append(BORDER_CHAR);
-			sb.append("\n");
-		}
-		for(int t=0; t<WIDTH+2; t++) sb.append(BORDER_CHAR);
-		pane.setText(sb.toString());
+		StringBuffer sb = new StringBuffer();
 		StyledDocument doc = pane.getStyledDocument();
-		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+		StyleConstants.setForeground(styleSet, Color.WHITE);
+		pane.setText("");
+		try {
+			for (int t = 0; t < WIDTH + extra_border; t++) {
+				doc.insertString(doc.getLength(), BORDER_CHAR, styleSet);//sb.append(BORDER_CHAR);
+			}
+			//sb.append("\n");
+			doc.insertString(doc.getLength(), "\n", styleSet);
+			for (int i = 0; i < board.length; i++) {
+				//sb.append(BORDER_CHAR);
+				doc.insertString(doc.getLength(), BORDER_CHAR, styleSet);
+				for (int j = 0; j < board[i].length; j++) {
+					if (board[i][j] != 0) {
+						StyleConstants.setForeground(styleSet, color_board[i][j]);
+						doc.insertString(doc.getLength(), BLOCK_CHAR, styleSet);
+						//sb.append(BLOCK_CHAR);
+						StyleConstants.setForeground(styleSet, Color.WHITE);
+					} else {
+						doc.insertString(doc.getLength(), BLANK_CHAR, styleSet);
+						//sb.append(BLANK_CHAR);
+					}
+				}
+				doc.insertString(doc.getLength(), BORDER_CHAR + "\n", styleSet);
+			}
+			for (int t = 0; t < WIDTH + extra_border; t++) {
+				doc.insertString(doc.getLength(), BORDER_CHAR, styleSet);
+			}
+		} catch (BadLocationException e) {
+			System.out.println(e);
+		}
+		//pane.setText(sb.toString());
 		pane.setStyledDocument(doc);
 		draw_next();
+		draw_score();
+	}
+
+	public void draw_score() {
+		StyledDocument doc = score_pane.getStyledDocument();
+		StyleConstants.setForeground(styleSet, Color.WHITE);
+		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+		StringBuffer sb = new StringBuffer();
+		sb.append("\nScore : ");
+		sb.append(score);
+		score_pane.setText(sb.toString());
+		score_pane.setStyledDocument(doc);
 	}
 
 	public void draw_next(){
 		StringBuffer sb = new StringBuffer();
+		StyledDocument doc = next_pane.getStyledDocument();
+		StyleConstants.setForeground(styleSet, next_block.getColor());
+		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
 		for(int i=0; i < NEXT_HEIGHT; i++) {
 			for(int j=0; j < NEXT_WIDTH; j++) {
 				if(next_board[i][j] != 0) {
@@ -461,11 +500,8 @@ public class Board extends JFrame {
 			}
 			sb.append("\n");
 		}
-		score_pane.setText(sb.toString());
-		StyledDocument doc = score_pane.getStyledDocument();
-		doc.setParagraphAttributes(0, doc.getLength(), styleSet, true);
-		score_pane.setStyledDocument(doc);
-		score_pane.setForeground(curr.getColor());
+		next_pane.setText(sb.toString());
+		next_pane.setStyledDocument(doc);
 	}
 
 	protected void moveCenter() {
@@ -475,6 +511,8 @@ public class Board extends JFrame {
 
 	public void reset() {
 		this.board = new int[20][10];
+		score = 0;
+		sprint = 0;
 		drawBoard();
 	}
 
@@ -506,14 +544,14 @@ public class Board extends JFrame {
 				break;
 			case 68:
 				harddrop();
-			case 80:
+			case KeyEvent.VK_ESCAPE:
 				pause();
 			}
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			
+
 		}
 	}
 	

@@ -60,7 +60,7 @@ public class TetrisMenu extends JFrame {
     private Image changeImgSize(String path){
         ImageIcon img = new ImageIcon(path);
         Image img1 = img.getImage();
-        Image changeImg = img1.getScaledInstance(90,90, Image.SCALE_SMOOTH);
+        Image changeImg = img1.getScaledInstance(50,50, Image.SCALE_SMOOTH);
         return changeImg;
     }
 
