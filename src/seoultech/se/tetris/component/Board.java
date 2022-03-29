@@ -10,9 +10,7 @@ import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 
 import seoultech.se.tetris.blocks.Block;
 import seoultech.se.tetris.blocks.IBlock;
@@ -34,15 +32,16 @@ public class Board extends JFrame {
 	public static final int NEXT_WIDTH = 6;
 	public static final int NEXT_HEIGHT = 3;
 	public static String BORDER_CHAR = "X";
-	public static char BLOCK_CHAR = 'O';
+	public static String BLOCK_CHAR = "O";
 	public static String BLANK_CHAR = " ";
 	public static final String win_BORDER_CHAR = "X";
-	public static final char win_BLOCK_CHAR = 'O';
+	public static final String win_BLOCK_CHAR = "O";
 	public static final String win_BLANK_CHAR = "     ";
 	public static final String mac_BORDER_CHAR = "X";
-	public static final char mac_BLOCK_CHAR = 'O';
+	public static final String mac_BLOCK_CHAR = "O";
 	public static final String mac_BLANK_CHAR = " ";
-	
+	public static String os;
+
 	private JTextPane pane;
 	private JTextPane next_pane;
 	private JTextPane score_pane;
@@ -79,7 +78,7 @@ public class Board extends JFrame {
 		main_panel = new JPanel();
 
 		// readOS
-		String os = System.getProperty("os.name").toLowerCase();
+		os = System.getProperty("os.name").toLowerCase();
 		//System.out.println(os);
 		if(os.contains("win")){
 			BORDER_CHAR = win_BORDER_CHAR;
@@ -425,28 +424,47 @@ public class Board extends JFrame {
 	}
 
 	public void drawBoard() {
+		int win_extra_border = 4;
+		int mac_extra_border = 2;
+		int extra_border;
+		if(os.contains("win"))
+			extra_border = win_extra_border;
+		else
+			extra_border = mac_extra_border;
+
 		StringBuffer sb = new StringBuffer();
 		StyledDocument doc = pane.getStyledDocument();
 		StyleConstants.setForeground(styleSet, Color.WHITE);
-		for(int t=0; t<WIDTH+2; t++) sb.append(BORDER_CHAR);
-		sb.append("\n");
-		for(int i=0; i < board.length; i++) {
-			sb.append(BORDER_CHAR);
-			for(int j=0; j < board[i].length; j++) {
-				if(board[i][j] != 0) {
-					sb.append(BLOCK_CHAR);
-					StyleConstants.setForeground(styleSet, curr.getColor());
-					doc.setParagraphAttributes(0, 1, styleSet, false);
-					StyleConstants.setForeground(styleSet, Color.WHITE);
-				} else {
-					sb.append(BLANK_CHAR);
-				}
+		pane.setText("");
+		try {
+			for (int t = 0; t < WIDTH + extra_border; t++) {
+				doc.insertString(doc.getLength(), BORDER_CHAR, styleSet);//sb.append(BORDER_CHAR);
 			}
-			sb.append(BORDER_CHAR);
-			sb.append("\n");
+			//sb.append("\n");
+			doc.insertString(doc.getLength(), "\n", styleSet);
+			for (int i = 0; i < board.length; i++) {
+				//sb.append(BORDER_CHAR);
+				doc.insertString(doc.getLength(), BORDER_CHAR, styleSet);
+				for (int j = 0; j < board[i].length; j++) {
+					if (board[i][j] != 0) {
+						StyleConstants.setForeground(styleSet, curr.getColor());
+						doc.insertString(doc.getLength(), BLOCK_CHAR, styleSet);
+						//sb.append(BLOCK_CHAR);
+						StyleConstants.setForeground(styleSet, Color.WHITE);
+					} else {
+						doc.insertString(doc.getLength(), BLANK_CHAR, styleSet);
+						//sb.append(BLANK_CHAR);
+					}
+				}
+				doc.insertString(doc.getLength(), BORDER_CHAR + "\n", styleSet);
+			}
+			for (int t = 0; t < WIDTH + extra_border; t++) {
+				doc.insertString(doc.getLength(), BORDER_CHAR, styleSet);
+			}
+		} catch (BadLocationException e) {
+			System.out.println(e);
 		}
-		for(int t=0; t<WIDTH+2; t++) sb.append(BORDER_CHAR);
-		pane.setText(sb.toString());
+		//pane.setText(sb.toString());
 		pane.setStyledDocument(doc);
 		draw_next();
 		draw_score();
