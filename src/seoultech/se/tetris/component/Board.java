@@ -417,7 +417,6 @@ public class Board extends JFrame {
 		}
 	}
 	protected void harddrop(){
-		pause();
 		eraseCurr();
 		while(!isBlocked('d'))
 			y++;
@@ -544,8 +543,10 @@ public class Board extends JFrame {
 				break;
 			case 68:
 				harddrop();
+				break;
 			case KeyEvent.VK_ESCAPE:
 				pause();
+				break;
 			}
 		}
 
