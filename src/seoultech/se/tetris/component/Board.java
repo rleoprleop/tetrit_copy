@@ -22,7 +22,6 @@ import seoultech.se.tetris.blocks.TBlock;
 import seoultech.se.tetris.blocks.ZBlock;
 
 
-
 public class Board extends JFrame {
 
 	private static final long serialVersionUID = 2434035659171694595L;
@@ -70,11 +69,11 @@ public class Board extends JFrame {
 	private static final int SPMAX=900;
 
 
-	public Board() {
+	public Board(int x, int y) {
 		super("SeoulTech SE Tetris");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500, 600);
-
+		this.setLocation(x, y);
 		this.setLayout(new GridLayout(1,2,10,0));
 		main_panel = new JPanel();
 
@@ -406,12 +405,16 @@ public class Board extends JFrame {
 		placeBlock();
 	}
 
-	protected void pause() {
+	public void pause() {
 		if(!ispaused){
 			ispaused = true;
 			timer.stop();
+			new Pause(this.getLocation().x, this.getLocation().y,this.getSize().width, this.getSize().height, this);
+
 		}
 		else{
+			System.out.println("11111");
+			this.setVisible(true);
 			ispaused = false;
 			timer.start();
 		}
@@ -544,8 +547,10 @@ public class Board extends JFrame {
 				break;
 			case 68:
 				harddrop();
+				break;
 			case KeyEvent.VK_ESCAPE:
 				pause();
+				break;
 			}
 		}
 

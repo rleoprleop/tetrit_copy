@@ -26,9 +26,9 @@ public class TetrisMenu extends JFrame {
     private JLabel upLabel,downLabel;
 
 
-    public TetrisMenu() {
+    public TetrisMenu(int x, int y) {
         this.setSize(frameWidth, frameHeight);
-
+        this.setLocation(x, y);
         this.setLayout(new GridLayout(2,1,10,0));
         //mainPanel = new JPanel();
         displayGameName();
@@ -83,12 +83,10 @@ public class TetrisMenu extends JFrame {
         switch (menuNum){
 
             case 0: //board class
-                Board gameStart = new Board();
+                Board gameStart = new Board(this.getLocation().x, this.getLocation().y);
                 this.dispose();
                 break;
             case 1: //score board class
-                Pause stop1 = new Pause();
-                this.dispose();
                 break;
             case 2: //setting class
                 break;
