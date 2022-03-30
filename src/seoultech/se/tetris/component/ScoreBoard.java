@@ -1,39 +1,55 @@
 package seoultech.se.tetris.component;
-
-
-
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+public class ScoreBoard  extends JFrame{
+   public ScoreBoard(){
+       this.setTitle("SeoulTech SE Tetris");
+       this.setSize(500, 600);
+       this.setLocationRelativeTo(null);
+       this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-public class ScoreBoard {
 
-    JFrame f;
-    private int frameWidth = 500;
-    private int frameHeight = 600;
-    ScoreBoard(){
-        f=new JFrame();
 
-        String data[][]={ {"User1","12","2"},
-                {"User2","20","1"},
-                {"User3","10","3"}};
-        String column[]={"Player Name","Score","Level"};
+       JButton jButtonBack =  new JButton("Back");
+       JPanel jPanel_head = new JPanel();
+       jPanel_head.setLayout(new BorderLayout());
+       jPanel_head.add(jButtonBack,BorderLayout.WEST);
 
-        JTable jt=new JTable(data,column);
-        jt.setBounds(30,40,200,300);
 
-        JScrollPane sp=new JScrollPane(jt);
-        f.add(sp);
+       String data[][]={ {"User1","12","2"},
+               {"User2","20","1"},
+               {"User3","10","3"}};
+       String column[]={"Player Name","Score","Level"};
 
-        f.setSize(300,400);
-        //  f.setLayout(null);
-        f.setTitle("SCORE");
-        f.setSize(frameWidth, frameHeight);
-        f.setLocationRelativeTo(null);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setVisible(true);
-    }
+       JTable jt=new JTable(data,column);
+       jt.setBounds(30,40,200,300);
+       JScrollPane sp=new JScrollPane(jt);
+
+       JPanel jPanel_data = new JPanel();
+       jPanel_data.setLayout(new BorderLayout());
+       jPanel_data.add(sp,BorderLayout.NORTH);
+
+        this.add(jButtonBack, BorderLayout.NORTH);
+        this.add(jPanel_data,BorderLayout.CENTER);
+        
+        jButtonBack.addMouseListener(new MyMouseListener());
+        this.setVisible(true);
+
+
+   }
+   class MyMouseListener extends MouseAdapter {
+	    public void mouseClicked(MouseEvent evt) {
+	    	TetrisMenu startTetrisMenu=new TetrisMenu();
+	    	startTetrisMenu.setVisible(true);
+	    	startTetrisMenu.setSize(500, 600);
+	    	startTetrisMenu.setLocationRelativeTo(null);
+	    }
+	}
     public static void main(String[] args) {
-        new ScoreBoard();
+       ScoreBoard main = new ScoreBoard();
     }
-}
 
 
+    }

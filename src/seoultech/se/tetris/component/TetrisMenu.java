@@ -46,6 +46,7 @@ public class TetrisMenu extends JFrame {
         setTitle("StartScreen");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+        this.setLocationRelativeTo(null);
     }
 
     void displayGameName(){
