@@ -420,7 +420,6 @@ public class Board extends JFrame {
 		}
 	}
 	protected void harddrop(){
-		pause();
 		eraseCurr();
 		while(!isBlocked('d'))
 			y++;
