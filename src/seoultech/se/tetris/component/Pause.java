@@ -30,7 +30,7 @@ public class Pause extends JFrame {
         this.add(menuPane);
 
 
-        setTitle("StartScreen");
+        setTitle("일시정지");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
