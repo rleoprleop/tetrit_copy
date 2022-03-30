@@ -77,6 +77,9 @@ public class Board extends JFrame {
 		this.setLayout(new GridLayout(1,2,10,0));
 		main_panel = new JPanel();
 
+		score = 0;
+		sprint =0;
+
 		// readOS
 		os = System.getProperty("os.name").toLowerCase();
 		//System.out.println(os);
@@ -377,8 +380,12 @@ public class Board extends JFrame {
 			y++;
 		}
 		else {
+			int combo = score;
 			placeBlock();
 			eraseRow();
+			combo = score - combo;
+			if(combo > 0)
+				score += combo-1;
 			curr = next_block;
 			next_block = getRandomBlock();
 			x = 3;
