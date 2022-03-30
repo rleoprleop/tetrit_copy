@@ -41,8 +41,8 @@ public class Pause extends JFrame {
         backGame = new JButton("돌아가기");
         terminate = new JButton("게임 종료");
         System.out.println(menuPane.getHeight());
-        backGame.setPreferredSize(new Dimension(this.getWidth()/4,this.getHeight()/3-16));
-        terminate.setPreferredSize(new Dimension(this.getWidth()/4,this.getHeight()/3-16));
+        backGame.setPreferredSize(new Dimension(this.getWidth()/4,this.getHeight()/3-20));
+        terminate.setPreferredSize(new Dimension(this.getWidth()/4,this.getHeight()/3-20));
 
         backGame.addKeyListener(new KeyListener() {
             @Override
