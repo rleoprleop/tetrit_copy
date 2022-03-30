@@ -413,14 +413,12 @@ public class Board extends JFrame {
 
 		}
 		else{
-			System.out.println("11111");
 			this.setVisible(true);
 			ispaused = false;
 			timer.start();
 		}
 	}
 	protected void harddrop(){
-		pause();
 		eraseCurr();
 		while(!isBlocked('d'))
 			y++;
