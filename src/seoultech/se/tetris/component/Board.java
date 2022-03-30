@@ -246,7 +246,7 @@ public class Board extends JFrame {
 			}
 			else return true;
 		}
-		else if(move == 'l') { //25일에 고쳐야함 회의하면서 ㄱㄱ
+		else if(move == 'l') { //왼쪽으로 갈수있는지 확인
 			if(x > 0) {
 				for (int i = y; i < y + curr.height(); i++) {
 					//System.out.print(x + " " + y + " ");
@@ -261,7 +261,7 @@ public class Board extends JFrame {
 			}
 			else return true;
 		}
-		else if(move == 'r') { //25일날 고쳐야함 회의하면서 ㄱㄱ
+		else if(move == 'r') { //오른쪽으로 갈 수 있는지 확인
 			if(x + curr.width() < WIDTH) {
 				for (int i = y; i < y + curr.height(); i++) {
 					//System.out.print(x + " " + y + " ");
@@ -277,7 +277,7 @@ public class Board extends JFrame {
 			}
 			else return true;
 		}
-		else if(move == 't') {
+		else if(move == 't') { //돌릴 수 있는지 확인
 			curr.rotate();
 			int tmpX = x + curr.getCentermovedX();
 			int tmpY = y + curr.getCentermovedY();
