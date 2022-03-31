@@ -78,6 +78,9 @@ public class Board extends JFrame {
 		this.setLayout(new GridLayout(1,2,10,0));
 		main_panel = new JPanel();
 
+		score = 0;
+		sprint =0;
+
 		// readOS
 		os = System.getProperty("os.name").toLowerCase();
 		//System.out.println(os);
@@ -264,7 +267,7 @@ public class Board extends JFrame {
 			}
 			else return true;
 		}
-		else if(move == 'l') { //25일에 고쳐야함 회의하면서 ㄱㄱ
+		else if(move == 'l') { //왼쪽으로 갈수있는지 확인
 			if(x > 0) {
 				for (int i = y; i < y + curr.height(); i++) {
 					//System.out.print(x + " " + y + " ");
@@ -279,7 +282,7 @@ public class Board extends JFrame {
 			}
 			else return true;
 		}
-		else if(move == 'r') { //25일날 고쳐야함 회의하면서 ㄱㄱ
+		else if(move == 'r') { //오른쪽으로 갈 수 있는지 확인
 			if(x + curr.width() < WIDTH) {
 				for (int i = y; i < y + curr.height(); i++) {
 					//System.out.print(x + " " + y + " ");
@@ -295,7 +298,7 @@ public class Board extends JFrame {
 			}
 			else return true;
 		}
-		else if(move == 't') {
+		else if(move == 't') { //돌릴 수 있는지 확인
 			curr.rotate();
 			int tmpX = x + curr.getCentermovedX();
 			int tmpY = y + curr.getCentermovedY();
@@ -398,8 +401,12 @@ public class Board extends JFrame {
 			y++;
 		}
 		else {
+			int combo = score;
 			placeBlock();
 			eraseRow();
+			combo = score - combo;
+			if(combo > 0)
+				score += combo-1;
 			curr = next_block;
 			next_block = getRandomBlock();
 			x = 3;

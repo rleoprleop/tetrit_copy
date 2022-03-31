@@ -2,10 +2,7 @@ package seoultech.se.tetris.component;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
 public class Pause extends JFrame {
     private static final int BACK = 1;
@@ -13,40 +10,39 @@ public class Pause extends JFrame {
     private static int[] menu = {BACK, END};
     private static int status = 1;
     private static int numMenu = menu.length;
-    private JPanel scorePane;
+
     private JPanel menuPane;
+    private JButton backGame, terminate;
     private Board board1;
+//    private Robot robot;
+
     public Pause(int x, int y, int frameW, int frameH, Board board){
         board1 = board;
         this.setSize(frameW, frameH/2);
         this.setLocation(x, frameH/2 - frameH/4+y);
-        this.setLayout(new GridLayout(3,1,10,0));
+        this.setLayout(new GridLayout(3,1,0,0));
 
         status = 1;
         numMenu = menu.length;
-        addScorePannel();
         addMenuPannel();
 
-        this.add(scorePane);
+        this.add(new JPanel());
         this.add(menuPane);
-        setTitle("PauseScreen");
+
+
+        setTitle("일시정지");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         this.setVisible(true);
-    }
-
-    void addScorePannel(){
-        JLabel lb = new JLabel("asd");
-        scorePane = new JPanel();
     }
 
     void addMenuPannel(){
         menuPane = new JPanel(new FlowLayout());
 
-        JButton backGame = new JButton("돌아가기");
-        JButton terminate = new JButton("게임 종료");
-        backGame.setPreferredSize(new Dimension(160,100));
-        terminate.setPreferredSize(new Dimension(160,100));
+        backGame = new JButton("돌아가기");
+        terminate = new JButton("게임 종료");
+        System.out.println(menuPane.getHeight());
+        backGame.setPreferredSize(new Dimension(this.getWidth()/4,this.getHeight()/3-20));
+        terminate.setPreferredSize(new Dimension(this.getWidth()/4,this.getHeight()/3-20));
 
         backGame.addKeyListener(new KeyListener() {
             @Override
@@ -63,17 +59,20 @@ public class Pause extends JFrame {
                             dispose();
                         } else if (status == END) {
                             dispose();
+                            new TetrisMenu(board1.getLocation().x, board1.getLocation().y);
                             board1.dispose();
                         }
                         break;
                     case KeyEvent.VK_RIGHT:
                         if(status < numMenu) {
                             status++;
+//                            mouseCursorMove(terminate.getLocation().x, terminate.getLocation().y);
                         }
                         break;
                     case KeyEvent.VK_LEFT:
                         if(status > 1)
                             status--;
+//                        mouseCursorMove(backGame.getLocation().x, backGame.getLocation().y);
                         break;
                 }
             }
@@ -83,8 +82,21 @@ public class Pause extends JFrame {
 
             }
         });
+
         menuPane.add(backGame);
         menuPane.add(terminate);
-
     }
+
+//    private void mouseCursorMove(int x, int y){
+//        try{
+//            robot = new Robot();
+//            robot.mouseMove(x,y);
+//            robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+//            robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+//        } catch (AWTException e){
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
 }
