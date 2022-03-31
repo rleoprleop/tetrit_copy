@@ -9,10 +9,9 @@ public class ZBlock extends Block {
 			{1, 1, 0},
 			{0, 1, 1}
 		};
-		/*if(color_weak)
+		if(color_weak)
 			color= new Color(0xcc79a7);
 		else
-			color = Color.RED;*/
-		color = Color.RED;
+			color = Color.RED;
 	}
 }
