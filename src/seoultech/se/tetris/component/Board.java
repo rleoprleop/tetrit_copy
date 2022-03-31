@@ -195,30 +195,6 @@ public class Board extends JFrame {
 			return new IBlock();
 	}
 
-	/*void testRandomBlock() {
-		Random rnd = new Random();
-		int block;
-		int[] arr=new int[7];
-		for(int i=0;i<100000;i++){
-			block = rnd.nextInt(lev_block);//68 70 72 34 35 36
-			if(block<10)
-				arr[0]+=1;
-			else if(block<20)
-				arr[1]+=1;
-			else if(block<30)
-				arr[2]+=1;
-			else if(block<40)
-				arr[3]+=1;
-			else if(block<50)
-				arr[4]+=1;
-			else if(block<60)
-				arr[5]+=1;
-			else
-				arr[6]+=1;
-		}
-		System.out.println(Arrays.toString(arr));
-	}*/
-
 	private void placeBlock() {
 		//System.out.println("width : " + curr.width() + " height : " + curr.height());
 		for(int j=0; j<curr.height(); j++) {
@@ -417,7 +393,10 @@ public class Board extends JFrame {
 			x = 3;
 			y = 0;
 			if(isBlocked('d')){
-				reset();
+				timer.stop();
+				System.out.println("이거 호출");
+				new EndGame(this.getLocation().x, this.getLocation().y, score);
+				this.dispose();
 			}
 		}
 		placeBlock();
@@ -458,7 +437,7 @@ public class Board extends JFrame {
 		placeBlock();
 		drawBoard();
 		moveDown();
-		timer.start();
+		//timer.start();
 	}
 
 	public void drawBoard() {
@@ -544,11 +523,10 @@ public class Board extends JFrame {
 	}
 
 	public void reset() {
-		System.out.println("이거 호출");
-//		this.board = new int[20][10];
-//		score = 0;
-//		sprint = 0;
-//		drawBoard();
+		this.board = new int[20][10];
+		score = 0;
+		sprint = 0;
+		drawBoard();
 	}
 
 	public class PlayerKeyListener implements KeyListener {

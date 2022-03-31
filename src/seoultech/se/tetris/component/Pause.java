@@ -59,12 +59,11 @@ public class Pause extends JFrame {
                     case KeyEvent.VK_ENTER:
                         if (status == BACK) {
                             board1.pause();
-                            dispose();
+                            disPose();
                         } else if (status == END) {
-                            dispose();
                             new TetrisMenu(board1.getLocation().x, board1.getLocation().y);
-
                             board1.dispose();
+                            disPose();
                         }
                         break;
                     case KeyEvent.VK_RIGHT:
