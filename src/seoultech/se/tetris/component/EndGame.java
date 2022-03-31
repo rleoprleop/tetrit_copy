@@ -2,6 +2,8 @@ package seoultech.se.tetris.component;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EndGame extends JFrame {
     private JPanel scorePane, scoreBoardPane, textPane, menuPane;
@@ -65,9 +67,26 @@ public class EndGame extends JFrame {
         terminate.setPreferredSize(new Dimension(85, 85));
         restart.setPreferredSize(new Dimension(85, 85));
 
+        terminate.addActionListener(listner);
+        restart.addActionListener(listner);
 
         menuPane.add(restart);
         menuPane.add(terminate);
     }
+    ActionListener listner = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(terminate.equals(e.getSource())){ //terminateButton pressed
+                new TetrisMenu(getLocation().x, getLocation().y);
+            }
+            else if(restart.equals(e.getSource())){ // restartButton pressed
+                new Board(getLocation().x, getLocation().y);
+                dispose();
+            }
+            else { //addButton pressed
 
+            }
+        }
+    };
 }
+

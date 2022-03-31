@@ -518,10 +518,11 @@ public class Board extends JFrame {
 	}
 
 	public void reset() {
-		this.board = new int[20][10];
-		score = 0;
-		sprint = 0;
-		drawBoard();
+		System.out.println("이거 호출");
+//		this.board = new int[20][10];
+//		score = 0;
+//		sprint = 0;
+//		drawBoard();
 	}
 
 	public class PlayerKeyListener implements KeyListener {
