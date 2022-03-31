@@ -9,6 +9,9 @@ public class OBlock extends Block {
 			{1, 1}, 
 			{1, 1}
 		};
-		color = Color.YELLOW;
+		if(color_weak)
+			color= new Color(0xf2e245);
+		else
+			color = Color.YELLOW;
 	}
 }
