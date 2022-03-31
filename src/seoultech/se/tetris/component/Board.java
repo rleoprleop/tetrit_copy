@@ -69,6 +69,8 @@ public class Board extends JFrame {
 	int sprint=0;
 	private static final int SPMAX=900;
 
+	int lev_block = 70; //난이도. easy 72 normal 70 hard 68
+
 
 	public Board(int x, int y) {
 		super("SeoulTech SE Tetris");
@@ -173,7 +175,7 @@ public class Board extends JFrame {
 	private Block getRandomBlock() {
 		//testRandomBlock();
 		Random rnd = new Random();
-		int block = rnd.nextInt(70);//68 70 72 34 35 36
+		int block = rnd.nextInt(lev_block);//68 70 72 34 35 36
 		if(block<10)
 			return new OBlock();
 		else if(block<20)
@@ -195,7 +197,7 @@ public class Board extends JFrame {
 		int block;
 		int[] arr=new int[7];
 		for(int i=0;i<100000;i++){
-			block = rnd.nextInt(68);//68 70 72 34 35 36
+			block = rnd.nextInt(lev_block);//68 70 72 34 35 36
 			if(block<10)
 				arr[0]+=1;
 			else if(block<20)
