@@ -10,8 +10,8 @@ public class EndGame extends JFrame {
     private JTextField writeName;
     private JButton restart, terminate, addButton;
 
-
     public EndGame(int x, int y, int score) {
+
         this.setLocation(x,y);
         this.setSize(600,500);
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
@@ -78,6 +78,7 @@ public class EndGame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if(terminate.equals(e.getSource())){ //terminateButton pressed
                 new TetrisMenu(getLocation().x, getLocation().y);
+                dispose();
             }
             else if(restart.equals(e.getSource())){ // restartButton pressed
                 new Board(getLocation().x, getLocation().y);
@@ -88,5 +89,9 @@ public class EndGame extends JFrame {
             }
         }
     };
+    void disPose() {
+        this.dispose();
+    }
+
 }
 

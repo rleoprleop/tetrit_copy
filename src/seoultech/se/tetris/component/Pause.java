@@ -42,7 +42,8 @@ public class Pause extends JFrame {
         backGame.setFocusPainted(false);
         backGame.setSelected(true);
         terminate = new JButton("게임 종료");
-        System.out.println(menuPane.getHeight());
+        terminate.setFocusPainted(false);
+
         backGame.setPreferredSize(new Dimension(this.getWidth()/4,this.getHeight()/3-20));
         terminate.setPreferredSize(new Dimension(this.getWidth()/4,this.getHeight()/3-20));
 
@@ -95,6 +96,11 @@ public class Pause extends JFrame {
         menuPane.add(backGame);
         menuPane.add(terminate);
     }
+
+    private void disPose() {
+        this.dispose();
+    }
+
 
 //    private void mouseCursorMove(int x, int y){
 //        try{

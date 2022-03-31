@@ -168,6 +168,10 @@ public class Board extends JFrame {
 		timer.start();
 	}
 
+	public int getScore(){
+		return score;
+	}
+
 	public void tempTask(){
 	}
 
@@ -391,7 +395,9 @@ public class Board extends JFrame {
 			x = 3;
 			y = 0;
 			if(isBlocked('d')){
-				reset();
+				new EndGame(this.getLocation().x, this.getLocation().y, score);
+				this.dispose();
+				timer.stop();
 			}
 		}
 		placeBlock();
@@ -518,11 +524,10 @@ public class Board extends JFrame {
 	}
 
 	public void reset() {
-		System.out.println("이거 호출");
-//		this.board = new int[20][10];
-//		score = 0;
-//		sprint = 0;
-//		drawBoard();
+		this.board = new int[20][10];
+		score = 0;
+		sprint = 0;
+		drawBoard();
 	}
 
 	public class PlayerKeyListener implements KeyListener {
