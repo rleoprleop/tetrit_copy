@@ -56,7 +56,7 @@ public class Board extends JFrame {
 	private Timer timer;
 	private Block curr;
 	private Block next_block;
-	private boolean ispaused = false;
+	private static boolean ispaused = false;
 	int x = 3; //Default Position.
 	int y = 0;
 	private static int score = 0;
@@ -156,7 +156,6 @@ public class Board extends JFrame {
 			}
 		});
 
-
 		//Initialize board for the game.
 		board = new int[HEIGHT][WIDTH];
 		next_board = new int[NEXT_HEIGHT][NEXT_WIDTH];
@@ -194,30 +193,6 @@ public class Board extends JFrame {
 		else
 			return new IBlock();
 	}
-
-	/*void testRandomBlock() {
-		Random rnd = new Random();
-		int block;
-		int[] arr=new int[7];
-		for(int i=0;i<100000;i++){
-			block = rnd.nextInt(lev_block);//68 70 72 34 35 36
-			if(block<10)
-				arr[0]+=1;
-			else if(block<20)
-				arr[1]+=1;
-			else if(block<30)
-				arr[2]+=1;
-			else if(block<40)
-				arr[3]+=1;
-			else if(block<50)
-				arr[4]+=1;
-			else if(block<60)
-				arr[5]+=1;
-			else
-				arr[6]+=1;
-		}
-		System.out.println(Arrays.toString(arr));
-	}*/
 
 	private void placeBlock() {
 		//System.out.println("width : " + curr.width() + " height : " + curr.height());
@@ -323,7 +298,6 @@ public class Board extends JFrame {
 				curr.rotate();
 				curr.rotate();
 				return false;
-
 			}
 			else{
 				curr.rotate();
@@ -332,7 +306,6 @@ public class Board extends JFrame {
 				return true;
 			}
 		}
-		//System.out.println();
 		return false;
 	}
 
@@ -365,14 +338,9 @@ public class Board extends JFrame {
 				}
 			}
 		}
-		//System.out.print(score);
-		//System.out.println(sprint);
-
 		for(int i = lowest; i>=0; i--){
 			down(i);
 		}
-
-
 	}
 
 	protected void down(int row) {
