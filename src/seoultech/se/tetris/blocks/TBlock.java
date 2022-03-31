@@ -9,6 +9,9 @@ public class TBlock extends Block {
 			{0, 1, 0},
 			{1, 2, 1}
 		};
-		color = Color.MAGENTA;
+		if(color_weak)
+			color= new Color(0xd5933e);
+		else
+			color = Color.MAGENTA;
 	}
 }

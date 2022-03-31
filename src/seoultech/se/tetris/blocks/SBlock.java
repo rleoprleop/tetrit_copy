@@ -9,6 +9,9 @@ public class SBlock extends Block {
 			{0, 1, 1},
 			{1, 1, 0}
 		};
-		color = Color.GREEN;
+		if(color_weak)
+			color= new Color(0x009f73);
+		else
+			color = Color.GREEN;
 	}
 }

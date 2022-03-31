@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLOutput;
+import java.util.Arrays;
 import java.util.Random;
 
 import javax.swing.*;
@@ -67,6 +68,11 @@ public class Board extends JFrame {
 
 	int sprint=0;
 	private static final int SPMAX=900;
+
+	private static final int EASY = 72;
+	private static final int NORMAL = 70;
+	private static final int HARD = 68;
+	private static int lev_block = NORMAL; //난이도. easy 72 normal 70 hard 68
 
 
 	public Board(int x, int y) {
@@ -168,34 +174,50 @@ public class Board extends JFrame {
 		timer.start();
 	}
 
-	public int getScore(){
-		return score;
-	}
-
-	public void tempTask(){
-	}
 
 	private Block getRandomBlock() {
+		//testRandomBlock();
 		Random rnd = new Random();
-		int block = rnd.nextInt(7);
-		switch(block) {
-		case 0:
-			return new IBlock();
-		case 1:
-			return new JBlock();
-		case 2:
-			return new LBlock();
-		case 3:
-			return new ZBlock();
-		case 4:
-			return new SBlock();
-		case 5:
-			return new TBlock();
-		case 6:
+		int block = rnd.nextInt(lev_block);//68 70 72 34 35 36
+		if(block<10)
 			return new OBlock();
-		}
-		return new LBlock();
+		else if(block<20)
+			return new JBlock();
+		else if(block<30)
+			return new LBlock();
+		else if(block<40)
+			return new ZBlock();
+		else if(block<50)
+			return new SBlock();
+		else if(block<60)
+			return new TBlock();
+		else
+			return new IBlock();
 	}
+
+	/*void testRandomBlock() {
+		Random rnd = new Random();
+		int block;
+		int[] arr=new int[7];
+		for(int i=0;i<100000;i++){
+			block = rnd.nextInt(lev_block);//68 70 72 34 35 36
+			if(block<10)
+				arr[0]+=1;
+			else if(block<20)
+				arr[1]+=1;
+			else if(block<30)
+				arr[2]+=1;
+			else if(block<40)
+				arr[3]+=1;
+			else if(block<50)
+				arr[4]+=1;
+			else if(block<60)
+				arr[5]+=1;
+			else
+				arr[6]+=1;
+		}
+		System.out.println(Arrays.toString(arr));
+	}*/
 
 	private void placeBlock() {
 		//System.out.println("width : " + curr.width() + " height : " + curr.height());
@@ -395,9 +417,7 @@ public class Board extends JFrame {
 			x = 3;
 			y = 0;
 			if(isBlocked('d')){
-				new EndGame(this.getLocation().x, this.getLocation().y, score);
-				this.dispose();
-				timer.stop();
+				reset();
 			}
 		}
 		placeBlock();
@@ -524,10 +544,11 @@ public class Board extends JFrame {
 	}
 
 	public void reset() {
-		this.board = new int[20][10];
-		score = 0;
-		sprint = 0;
-		drawBoard();
+		System.out.println("이거 호출");
+//		this.board = new int[20][10];
+//		score = 0;
+//		sprint = 0;
+//		drawBoard();
 	}
 
 	public class PlayerKeyListener implements KeyListener {
