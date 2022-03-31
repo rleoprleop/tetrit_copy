@@ -63,6 +63,8 @@ public class Pause extends JFrame {
                             dispose();
                         } else if (status == END) {
                             dispose();
+                            new TetrisMenu(board1.getLocation().x,board1.getLocation().y);
+
                             board1.dispose();
                         }
                         break;

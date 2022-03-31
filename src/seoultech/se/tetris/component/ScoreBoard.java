@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 public class ScoreBoard  extends JFrame{
    public ScoreBoard(){
        this.setTitle("SeoulTech SE Tetris");
@@ -39,12 +40,18 @@ public class ScoreBoard  extends JFrame{
 
 
    }
+
+   void disPose() {
+       this.dispose();
+   }
+
    class MyMouseListener extends MouseAdapter {
 	    public void mouseClicked(MouseEvent evt) {
-	    	TetrisMenu startTetrisMenu=new TetrisMenu();
+	    	TetrisMenu startTetrisMenu=new TetrisMenu(200,200);
 	    	startTetrisMenu.setVisible(true);
 	    	startTetrisMenu.setSize(500, 600);
 	    	startTetrisMenu.setLocationRelativeTo(null);
+            disPose();
 	    }
 	}
     public static void main(String[] args) {

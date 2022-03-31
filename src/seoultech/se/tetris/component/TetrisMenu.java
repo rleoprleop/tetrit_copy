@@ -88,6 +88,8 @@ public class TetrisMenu extends JFrame {
                 this.dispose();
                 break;
             case 1: //score board class
+                ScoreBoard scoreboard = new ScoreBoard();
+                this.dispose();
                 break;
             case 2: //setting class
                 break;
