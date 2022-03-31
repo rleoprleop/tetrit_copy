@@ -41,11 +41,12 @@ public class EndGame extends JFrame {
     void setScoreBoardPane(){
         scoreBoardPane = new JPanel(new FlowLayout());
         // scoreBoard에 textpane추가
+        JPanel scoreBoard = ScoreBoard.tablePane;
         JButton demo = new JButton("여기에 scoreboard들어와야함");
-        demo.setPreferredSize(new Dimension(this.getWidth()-20, this.getHeight()/2));
+        scoreBoard.setPreferredSize(new Dimension(this.getWidth()-20, this.getHeight()/2));
 
 
-        scoreBoardPane.add(demo);
+        scoreBoardPane.add(scoreBoard);
     }
 
     void setTextPane(){

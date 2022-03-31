@@ -91,7 +91,7 @@ public class TetrisMenu extends JFrame {
                 this.dispose();
                 break;
             case 2: //setting class
-//                new EndGame(this.getLocation().x, this.getLocation().y, this);
+                new Setting(this.getLocation().x, this.getLocation().y);
                 this.dispose();
                 break;
             case 3://exit game

@@ -437,7 +437,6 @@ public class Board extends JFrame {
 		placeBlock();
 		drawBoard();
 		moveDown();
-		//timer.start();
 	}
 
 	public void drawBoard() {

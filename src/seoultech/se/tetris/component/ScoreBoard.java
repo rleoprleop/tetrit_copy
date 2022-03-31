@@ -14,10 +14,7 @@ public class ScoreBoard  extends JFrame{
        this.setLocation(x, y);
        this.setTitle("SeoulTech SE Tetris");
        this.setSize(500, 600);
-       this.setLocationRelativeTo(null);
        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-
 
        backButton =  new JButton("Back");
        buttonPane = new JPanel();
@@ -40,6 +37,7 @@ public class ScoreBoard  extends JFrame{
         tablePane.add(scoreTable);
 
         this.add(buttonPane, BorderLayout.NORTH);
+
         this.add(tablePane,BorderLayout.CENTER);
 
         backButton.addMouseListener(new MyMouseListener());
