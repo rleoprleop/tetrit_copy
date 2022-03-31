@@ -46,6 +46,7 @@ public class TetrisMenu extends JFrame {
         setTitle("StartScreen");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+        this.setLocationRelativeTo(null);
     }
 
     void displayGameName(){
@@ -87,6 +88,8 @@ public class TetrisMenu extends JFrame {
                 this.dispose();
                 break;
             case 1: //score board class
+                ScoreBoard scoreboard = new ScoreBoard();
+                this.dispose();
                 break;
             case 2: //setting class
                 new EndGame(this.getLocation().x, this.getLocation().y, 10);
