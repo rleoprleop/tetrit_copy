@@ -82,4 +82,12 @@ public abstract class Block {
 			return shape[0].length;
 		return 0;
 	}
+
+	public void setColorWeak(boolean a){
+		color_weak=a;
+	}
+
+	public boolean getColorWeak(){
+		return color_weak;
+	}
 }
