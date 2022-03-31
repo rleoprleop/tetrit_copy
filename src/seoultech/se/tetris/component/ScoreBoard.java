@@ -28,7 +28,6 @@ public class ScoreBoard  extends JFrame{
        String column[]={"Player Name","Score","Level"};
 
        JTable table=new JTable(data,column);
-       //table.setBounds(30,40,200,300);
        scoreTable=new JScrollPane(table);
 
        tablePane = new JPanel();

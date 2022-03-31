@@ -1,5 +1,7 @@
 package seoultech.se.tetris.component;
 
+import seoultech.se.tetris.component.setting.DisplaySetting;
+import seoultech.se.tetris.component.setting.KeySetting;
 import seoultech.se.tetris.component.setting.LevelSetting;
 
 import javax.swing.*;
@@ -33,6 +35,8 @@ public class Setting extends JFrame {
     private void setbackButtonPanel() {
         backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         backButton = new JButton("back");
+
+        backButton.addActionListener(listner);
         backButtonPanel.add(backButton);
     }
 
@@ -42,26 +46,31 @@ public class Setting extends JFrame {
         JPanel levelPanel = new JPanel();
         level = new JButton("Level");
         level.setPreferredSize(new Dimension(180, 60));
+        level.addActionListener(listner);
         levelPanel.add(level);
 
         JPanel colorWeakPanel = new JPanel();
         colorWeak = new JButton("Color_Weak");
         colorWeak.setPreferredSize(new Dimension(180, 60));
+        colorWeak.addActionListener(listner);
         colorWeakPanel.add(colorWeak);
 
         JPanel displayPanel = new JPanel();
         display = new JButton("Display");
         display.setPreferredSize(new Dimension(180, 60));
+        display.addActionListener(listner);
         displayPanel.add(display);
 
         JPanel keySettingPanel = new JPanel();
         keySetting = new JButton("KeySetting");
         keySetting.setPreferredSize(new Dimension(180, 60));
+        keySetting.addActionListener(listner);
         keySettingPanel.add(keySetting);
 
         JPanel resetPanel = new JPanel();
         reset = new JButton("Reset");
         reset.setPreferredSize(new Dimension(180, 60));
+        reset.addActionListener(listner);
         resetPanel.add(reset);
 
         menuPanel.add(levelPanel);
@@ -78,25 +87,23 @@ public class Setting extends JFrame {
                 new TetrisMenu(getThis().getLocation().x, getThis().getLocation().y);
                 getThis().dispose();
             }
-//            else if (level.equals(e.getSource())) { // restartButton pressed
-//                new LevelSetting(getThis().getLocation().x, getThis().getLocation().y);
-//                getThis().dispose();
-//            }
-//            else if (colorWeak.equals(e.getSource())) { // restartButton pressed
-//                new LevelSetting(getThis().getLocation().x, getThis().getLocation().y);
-//                getThis().dispose();
-//            }
-//            else if (display.equals(e.getSource())) { // restartButton pressed
-//                new LevelSetting(getThis().getLocation().x, getThis().getLocation().y);
-//                getThis().dispose();
-//            }
-//            else if (keySetting.equals(e.getSource())) { // restartButton pressed
-//                new TetrisMenu(getThis().getLocation().x, getThis().getLocation().y)
-//                getThis().dispose();
-//            }
-            else { // restartButton pressed
-                new TetrisMenu(getThis().getLocation().x, getThis().getLocation().y);
+            else if (level.equals(e.getSource())) { // restartButton pressed
+                new LevelSetting(getThis().getLocation().x, getThis().getLocation().y);
                 getThis().dispose();
+            }
+            else if (colorWeak.equals(e.getSource())) { // restartButton pressed
+
+            }
+            else if (display.equals(e.getSource())) { // restartButton pressed
+                new DisplaySetting(getThis().getLocation().x, getThis().getLocation().y);
+                getThis().dispose();
+            }
+            else if (keySetting.equals(e.getSource())) { // restartButton pressed
+                new KeySetting(getThis().getLocation().x, getThis().getLocation().y);
+                getThis().dispose();
+            }
+            else { // restartButton pressed
+
             }
         }
     };

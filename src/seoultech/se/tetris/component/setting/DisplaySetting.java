@@ -1,15 +1,20 @@
 package seoultech.se.tetris.component.setting;
 
+import seoultech.se.tetris.component.Setting;
+import seoultech.se.tetris.component.TetrisMenu;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class DisplaySetting extends JFrame {
     private Container container;
     private JPanel backButtonPanel, menuPanel;
     private JButton backButton;
-    private JButton level, colorWeak, display, keySetting, reset;
+    private JButton big, normal, small;
 
-    public void LevelSetting(int x, int y) {
+    public DisplaySetting(int x, int y) {
         this.setSize(500, 600);
         this.setLocation(x, y);
         this.setLayout(new BorderLayout(25, 25));
@@ -26,41 +31,54 @@ public class DisplaySetting extends JFrame {
     private void setbackButtonPanel(){
         backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         backButton = new JButton("back");
+        backButton.addActionListener(listner);
         backButtonPanel.add(backButton);
     }
 
     private void setMenuPanel(){
         menuPanel = new JPanel(new GridLayout(5,1,5,0));
 
-        JPanel levelPanel = new JPanel();
-        level = new JButton("Level");
-        level.setPreferredSize(new Dimension(180, 60));
-        levelPanel.add(level);
+        JPanel bigPanel = new JPanel();
+        big = new JButton("big");
+        big.setPreferredSize(new Dimension(180, 60));
+        big.addActionListener(listner);
+        bigPanel.add(big);
 
-        JPanel colorWeakPanel = new JPanel();
-        colorWeak = new JButton("Color_Weak");
-        colorWeak.setPreferredSize(new Dimension(180, 60));
-        colorWeakPanel.add(colorWeak);
+        JPanel normalPanel = new JPanel();
+        normal = new JButton("normal");
+        normal.setPreferredSize(new Dimension(180, 60));
+        normal.addActionListener(listner);
+        normalPanel.add(normal);
 
-        JPanel displayPanel  = new JPanel();
-        display = new JButton("Display");
-        display.setPreferredSize(new Dimension(180, 60));
-        displayPanel.add(display);
+        JPanel smallPanel  = new JPanel();
+        small = new JButton("small");
+        small.setPreferredSize(new Dimension(180, 60));
+        small.addActionListener(listner);
+        smallPanel.add(small);
 
-        JPanel keySettingPanel  = new JPanel();
-        keySetting = new JButton("KeySetting");
-        keySetting.setPreferredSize(new Dimension(180, 60));
-        keySettingPanel.add(keySetting);
+        menuPanel.add(bigPanel);
+        menuPanel.add(normalPanel);
+        menuPanel.add(smallPanel);
 
-        JPanel resetPanel  = new JPanel();
-        reset = new JButton("Reset");
-        reset.setPreferredSize(new Dimension(180, 60));
-        resetPanel.add(reset);
-
-        menuPanel.add(levelPanel);
-        menuPanel.add(colorWeakPanel);
-        menuPanel.add(displayPanel);
-        menuPanel.add(keySettingPanel);
-        menuPanel.add(resetPanel);
     }
+    ActionListener listner = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (backButton.equals(e.getSource())) {
+                new Setting(getThis().getLocation().x, getThis().getLocation().y);
+                getThis().dispose();
+            }
+            else if (big.equals(e.getSource())) { // restartButton pressed
+
+            }
+            else if (normal.equals(e.getSource())) { // restartButton pressed
+
+            }
+            else { // restartButton pressed
+
+            }
+        }
+    };
+
+    private JFrame getThis() {return this;}
 }
