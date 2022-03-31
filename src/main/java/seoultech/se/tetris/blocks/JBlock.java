@@ -9,6 +9,9 @@ public class JBlock extends Block {
 				{1, 2, 1},
 				{0, 0, 1}
 		};
-		color = Color.BLUE;
+		if(color_weak)
+			color= new Color(0x0072b1);
+		else
+			color = Color.BLUE;
 	}
 }

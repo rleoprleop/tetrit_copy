@@ -9,6 +9,9 @@ public class LBlock extends Block {
 			{1, 2, 1},
 			{1, 0, 0}
 		};
-		color = Color.ORANGE;
+		if(color_weak)
+			color= new Color(0x730a71);
+		else
+			color = Color.ORANGE;
 	}
 }

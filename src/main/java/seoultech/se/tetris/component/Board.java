@@ -385,7 +385,10 @@ public class Board extends JFrame {
 			x = 3;
 			y = 0;
 			if(isBlocked('d')){
-				reset();
+				timer.stop();
+				System.out.println("이거 호출");
+				new EndGame(this.getLocation().x, this.getLocation().y, score);
+				this.dispose();
 			}
 		}
 		placeBlock();
@@ -426,7 +429,6 @@ public class Board extends JFrame {
 		placeBlock();
 		drawBoard();
 		moveDown();
-		timer.start();
 	}
 
 	public void drawBoard() {

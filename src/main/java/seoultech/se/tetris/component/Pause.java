@@ -39,8 +39,11 @@ public class Pause extends JFrame {
         menuPane = new JPanel(new FlowLayout());
 
         backGame = new JButton("돌아가기");
+        backGame.setFocusPainted(false);
+        backGame.setSelected(true);
         terminate = new JButton("게임 종료");
-        System.out.println(menuPane.getHeight());
+        terminate.setFocusPainted(false);
+
         backGame.setPreferredSize(new Dimension(this.getWidth()/4,this.getHeight()/3-20));
         terminate.setPreferredSize(new Dimension(this.getWidth()/4,this.getHeight()/3-20));
 
@@ -56,22 +59,28 @@ public class Pause extends JFrame {
                     case KeyEvent.VK_ENTER:
                         if (status == BACK) {
                             board1.pause();
-                            dispose();
+                            disPose();
                         } else if (status == END) {
-                            dispose();
                             new TetrisMenu(board1.getLocation().x, board1.getLocation().y);
                             board1.dispose();
+                            disPose();
                         }
                         break;
                     case KeyEvent.VK_RIGHT:
                         if(status < numMenu) {
                             status++;
-//                            mouseCursorMove(terminate.getLocation().x, terminate.getLocation().y);
+                            backGame.setSelected(false);
+                            terminate.setSelected(true);
+//                          mouseCursorMove(terminate.getLocation().x, terminate.getLocation().y);
+
                         }
                         break;
                     case KeyEvent.VK_LEFT:
                         if(status > 1)
                             status--;
+
+                        terminate.setSelected(false);
+                        backGame.setSelected(true);
 //                        mouseCursorMove(backGame.getLocation().x, backGame.getLocation().y);
                         break;
                 }
@@ -86,6 +95,11 @@ public class Pause extends JFrame {
         menuPane.add(backGame);
         menuPane.add(terminate);
     }
+
+    private void disPose() {
+        this.dispose();
+    }
+
 
 //    private void mouseCursorMove(int x, int y){
 //        try{

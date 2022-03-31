@@ -2,12 +2,13 @@ package seoultech.se.tetris.component;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EndGame extends JFrame {
     private JPanel scorePane, scoreBoardPane, textPane, menuPane;
     private JTextField writeName;
     private JButton restart, terminate, addButton;
-
 
     public EndGame(int x, int y, int score) {
         this.setLocation(x,y);
@@ -40,11 +41,12 @@ public class EndGame extends JFrame {
     void setScoreBoardPane(){
         scoreBoardPane = new JPanel(new FlowLayout());
         // scoreBoard에 textpane추가
+        JPanel scoreBoard = ScoreBoard.tablePane;
         JButton demo = new JButton("여기에 scoreboard들어와야함");
-        demo.setPreferredSize(new Dimension(this.getWidth()-20, this.getHeight()/2));
+        scoreBoard.setPreferredSize(new Dimension(this.getWidth()-20, this.getHeight()/2));
 
 
-        scoreBoardPane.add(demo);
+        scoreBoardPane.add(scoreBoard);
     }
 
     void setTextPane(){
@@ -65,9 +67,33 @@ public class EndGame extends JFrame {
         terminate.setPreferredSize(new Dimension(85, 85));
         restart.setPreferredSize(new Dimension(85, 85));
 
+        terminate.addActionListener(listner);
+        restart.addActionListener(listner);
 
         menuPane.add(restart);
         menuPane.add(terminate);
     }
+    ActionListener listner = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(terminate.equals(e.getSource())){ //terminateButton pressed
+                disPose();
+                new TetrisMenu(getLocation().x, getLocation().y);
+                disPose();
+            }
+            else if(restart.equals(e.getSource())){ // restartButton pressed
+                System.out.println("이것 호출");
+                new Board(getLocation().x, getLocation().y);
+                disPose();
+            }
+            else { //addButton pressed
+
+            }
+        }
+    };
+    void disPose() {
+        this.dispose();
+    }
 
 }
+

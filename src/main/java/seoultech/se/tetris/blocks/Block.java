@@ -8,6 +8,7 @@ public abstract class Block {
 	protected Color color;
 	protected int centermoved_x;
 	protected int centermoved_y;
+	protected static boolean color_weak = true;
 	
 	public Block() {
 		shape = new int[][]{ 

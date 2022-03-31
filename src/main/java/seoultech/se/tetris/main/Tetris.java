@@ -6,7 +6,8 @@ import seoultech.se.tetris.component.TetrisMenu;
 public class Tetris {
 
 	public static void main(String[] args) {
-		TetrisMenu main = new TetrisMenu(200,200);
+
+		TetrisMenu main = new TetrisMenu(600,500);
 //		Board main = new Board();
 //		main.setSize(500, 600);
 //		main.setVisible(true);
