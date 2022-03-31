@@ -9,7 +9,6 @@ import javax.swing.text.BoxView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.Flow;
 
 public class Setting extends JFrame {
     private Container container;
