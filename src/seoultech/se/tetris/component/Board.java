@@ -69,7 +69,10 @@ public class Board extends JFrame {
 	int sprint=0;
 	private static final int SPMAX=900;
 
-	int lev_block = 70; //난이도. easy 72 normal 70 hard 68
+	private static final int EASY = 72;
+	private static final int NORMAL = 70;
+	private static final int HARD = 68;
+	private static int lev_block = NORMAL; //난이도. easy 72 normal 70 hard 68
 
 
 	public Board(int x, int y) {
