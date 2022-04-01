@@ -174,6 +174,18 @@ public class Board extends JFrame {
 		timer.start();
 	}
 
+	public void setLev_block(int a){
+		if(a==EASY)
+			lev_block=EASY;
+		else if(a==HARD)
+			lev_block=HARD;
+		else
+			lev_block=NORMAL;
+	}
+	public int getLev_block(){
+		return lev_block;//easy 72, normal 70, hard 68
+	}
+
 
 	private Block getRandomBlock() {
 		//testRandomBlock();
