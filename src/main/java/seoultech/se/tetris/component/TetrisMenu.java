@@ -98,11 +98,11 @@ public class TetrisMenu extends JFrame {
         switch (menuNum){
 
             case 0: //board class
-                Board gameStart = new Board(this.getLocation().x, this.getLocation().y);
+                new Board(this.getLocation().x, this.getLocation().y);
                 this.dispose();
                 break;
             case 1: //score board class
-                ScoreBoard scoreboard = new ScoreBoard(this.getLocation().x, this.getLocation().y);
+                new ScoreBoard(this.getLocation().x, this.getLocation().y);
                 this.dispose();
                 break;
             case 2: //setting class

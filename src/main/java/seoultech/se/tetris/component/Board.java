@@ -445,7 +445,6 @@ public class Board extends JFrame {
 			y = 0;
 			if(isBlocked('d')){
 				timer.stop();
-				System.out.println("이거 호출");
 				new EndGame(this.getLocation().x, this.getLocation().y, score);
 				this.dispose();
 			}
