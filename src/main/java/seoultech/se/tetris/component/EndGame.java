@@ -77,12 +77,10 @@ public class EndGame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(terminate.equals(e.getSource())){ //terminateButton pressed
-                disPose();
                 new TetrisMenu(getLocation().x, getLocation().y);
                 disPose();
             }
             else if(restart.equals(e.getSource())){ // restartButton pressed
-                System.out.println("이것 호출");
                 new Board(getLocation().x, getLocation().y);
                 disPose();
             }
