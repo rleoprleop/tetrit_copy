@@ -25,9 +25,19 @@ public class TetrisMenu extends JFrame {
     private int frameWidth = 500;
     private int frameHeight = 600;
     private JLabel upLabel,downLabel;
+    private ImageIcon background = new ImageIcon(changeImgSize("img/Start_background.png"));
 
 
     public TetrisMenu(int x, int y) {
+
+        JPanel back = new JPanel(){
+            public void paintComponent(Graphics g){
+                g.drawImage(background.getImage(),0,0,null);
+                setOpaque(false);
+                super.paintComponent(g);
+            }
+        };
+
         this.setSize(frameWidth, frameHeight);
         this.setLocation(x, y);
         this.setLayout(new GridLayout(2,1,10,0));
@@ -40,9 +50,13 @@ public class TetrisMenu extends JFrame {
         menuButton.addKeyListener(keylistner);
         menuButton.setFocusable(true);
 
+        back.add(gameNamePane);
+        back.add(menuPane);
 
-        this.add(gameNamePane);
-        this.add(menuPane);
+        this.add(back);
+
+//        this.add(gameNamePane);
+//        this.add(menuPane);
 
         setTitle("StartScreen");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

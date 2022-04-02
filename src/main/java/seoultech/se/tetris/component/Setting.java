@@ -10,6 +10,7 @@ import javax.swing.text.BoxView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 
 public class Setting extends JFrame {
     private Container container;
@@ -41,35 +42,62 @@ public class Setting extends JFrame {
         backButtonPanel.add(backButton);
     }
 
+    private Image changeImgSize(String path){
+        ImageIcon img = new ImageIcon(path);
+        Image img1 = img.getImage();
+        Image changeImg = img1.getScaledInstance(180,60, Image.SCALE_SMOOTH);
+        return changeImg;
+    }
+
     private void setMenuPanel() {
         menuPanel = new JPanel(new GridLayout(5, 1, 5, 0));
+        ImageIcon level_activate = new ImageIcon(changeImgSize("img/Level_activate.png"));
+        ImageIcon level_disabled = new ImageIcon(changeImgSize("img/Level_disabled.png"));
+        ImageIcon colorweak_activate = new ImageIcon(changeImgSize("img/Colorweak_activate.png"));
+        ImageIcon colorweak_disabled = new ImageIcon(changeImgSize("img/Colorweak_disabled.png"));
+        ImageIcon display_activate = new ImageIcon(changeImgSize("img/Display_activate.png"));
+        ImageIcon display_disabled = new ImageIcon(changeImgSize("img/Display_disabled.png"));
+        ImageIcon keymapping_activate = new ImageIcon(changeImgSize("img/Keymapping_activate.png"));
+        ImageIcon keymapping_disabled = new ImageIcon(changeImgSize("img/Keymapping_disabled.png"));
+        ImageIcon reset_activate = new ImageIcon(changeImgSize("img/Reset_activate.png"));
+        ImageIcon reset_disabled = new ImageIcon(changeImgSize("img/Reset_disabled.png"));
 
         JPanel levelPanel = new JPanel();
-        level = new JButton("Level");
+        level = new JButton(level_disabled);
+        level.setRolloverIcon(level_activate);
+        level.setBorderPainted(false);
         level.setPreferredSize(new Dimension(180, 60));
         level.addActionListener(listner);
         levelPanel.add(level);
 
         JPanel colorWeakPanel = new JPanel();
-        colorWeak = new JButton("Color_Weak");
+        colorWeak = new JButton(colorweak_disabled);
+        colorWeak.setRolloverIcon(colorweak_activate);
+        colorWeak.setBorderPainted(false);
         colorWeak.setPreferredSize(new Dimension(180, 60));
         colorWeak.addActionListener(listner);
         colorWeakPanel.add(colorWeak);
 
         JPanel displayPanel = new JPanel();
-        display = new JButton("Display");
+        display = new JButton(display_disabled);
+        display.setRolloverIcon(display_activate);
+        display.setBorderPainted(false);
         display.setPreferredSize(new Dimension(180, 60));
         display.addActionListener(listner);
         displayPanel.add(display);
 
         JPanel keySettingPanel = new JPanel();
-        keySetting = new JButton("KeySetting");
+        keySetting = new JButton(keymapping_disabled);
+        keySetting.setRolloverIcon(keymapping_activate);
+        keySetting.setBorderPainted(false);
         keySetting.setPreferredSize(new Dimension(180, 60));
         keySetting.addActionListener(listner);
         keySettingPanel.add(keySetting);
 
         JPanel resetPanel = new JPanel();
-        reset = new JButton("Reset");
+        reset = new JButton(reset_disabled);
+        reset.setRolloverIcon(reset_activate);
+        reset.setBorderPainted(false);
         reset.setPreferredSize(new Dimension(180, 60));
         reset.addActionListener(listner);
         resetPanel.add(reset);
