@@ -1,10 +1,11 @@
 package seoultech.se.tetris.blocks;
 
 import java.awt.Color;
+import java.io.IOException;
 
 public class TBlock extends Block {
 	
-	public TBlock() {
+	public TBlock() throws IOException {
 		shape = new int[][] { 
 			{0, 1, 0},
 			{1, 2, 1}
