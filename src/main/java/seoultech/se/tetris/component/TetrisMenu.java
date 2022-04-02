@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -79,7 +80,7 @@ public class TetrisMenu extends JFrame {
         menuPane.add(downLabel);
     }
 
-    void enterPressed() {
+    void enterPressed() throws IOException {
         switch (menuNum){
 
             case 0: //board class
@@ -112,7 +113,11 @@ public class TetrisMenu extends JFrame {
             switch(e.getKeyCode()) {
                 case KeyEvent.VK_ENTER:
                     //해당 class로 이동
-                    enterPressed();
+                    try {
+                        enterPressed();
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
                     break;
                 case KeyEvent.VK_DOWN:
                     menuNum = (menuNum + 1)%button_size;

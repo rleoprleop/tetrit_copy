@@ -1,5 +1,6 @@
 package seoultech.se.tetris.component;
 
+import seoultech.se.tetris.component.model.Data;
 import seoultech.se.tetris.component.setting.DisplaySetting;
 import seoultech.se.tetris.component.setting.KeySetting;
 import seoultech.se.tetris.component.setting.LevelSetting;
@@ -15,6 +16,7 @@ public class Setting extends JFrame {
     private JPanel backButtonPanel, menuPanel;
     private JButton backButton;
     private JButton level, colorWeak, display, keySetting, reset;
+    private Data settingdata;
 
     public Setting(int x, int y) {
         this.setSize(500, 600);

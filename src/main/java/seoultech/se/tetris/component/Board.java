@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.security.KeyException;
 import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Random;
@@ -21,6 +23,9 @@ import seoultech.se.tetris.blocks.OBlock;
 import seoultech.se.tetris.blocks.SBlock;
 import seoultech.se.tetris.blocks.TBlock;
 import seoultech.se.tetris.blocks.ZBlock;
+import seoultech.se.tetris.component.model.Data;
+
+import static java.awt.event.KeyEvent.VK_A;
 
 
 public class Board extends JFrame {
@@ -62,23 +67,31 @@ public class Board extends JFrame {
 	private static int score = 0;
 
 	private static final int initInterval = 1000;
-	private static final int curr_block = 1;
-	private static final int completed_block = 2;
-	private static final int empty_block = 0;
-
 	int sprint=0;
 	private static final int SPMAX=900;
 
 	private static final int EASY = 72;
 	private static final int NORMAL = 70;
 	private static final int HARD = 68;
+	private Data settingdata = new Data();
 	private static int lev_block = NORMAL; //난이도. easy 72 normal 70 hard 68
+	private int display_width;
+	private int display_height;
+	private int key_left;
+	private int key_right;
+	private int key_rotate;
+	private int key_harddrop;
+	private int key_pause;
+	private int key_down;
 
 
-	public Board(int x, int y) {
+	public Board(int x, int y) throws IOException {
 		super("SeoulTech SE Tetris");
+
+		//read setting
+		setting();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(500, 600);
+		this.setSize(display_width, display_height);
 		this.setLocation(x, y);
 		this.setLayout(new GridLayout(1,2,10,0));
 		main_panel = new JPanel();
@@ -146,7 +159,11 @@ public class Board extends JFrame {
 		timer = new Timer(initInterval, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				moveDown();
+				try {
+					moveDown();
+				} catch (IOException ioException) {
+					ioException.printStackTrace();
+				}
 				drawBoard();
 				//System.out.println(timer.getDelay());
 				if(sprint>SPMAX){
@@ -173,8 +190,50 @@ public class Board extends JFrame {
 		timer.start();
 	}
 
+	private void setting() throws IOException {
+		String lv = settingdata.getLevel();
+		switch(lv){
+			case "normal":
+				lev_block = NORMAL;
+				break;
+			case "hard":
+				lev_block = HARD;
+				break;
+			case "easy":
+				lev_block = EASY;
+				break;
+		}
+		String display = settingdata.getDisplay();
+		switch (display){
+			case "small":
+				display_width = 500;
+				display_height = 600;
+				break;
+			case "normal":
+				display_width = 1000;
+				display_height = 1200;
+				break;
+			case "big":
+				display_width = 1500;
+				display_height = 1800;
+				break;
+		}
+		int code = settingdata.getLeft();
+		key_left = code;
+		code = settingdata.getRight();
+		key_right = code;
+		code = settingdata.getRotate();
+		key_rotate = code;
+		code = settingdata.getHarddrop();
+		key_harddrop = code;
+		code = settingdata.getPause();
+		key_pause = code;
+		code = settingdata.getDown();
+		key_down = code;
+	}
 
-	private Block getRandomBlock() {
+
+	private Block getRandomBlock() throws IOException {
 		//testRandomBlock();
 		Random rnd = new Random();
 		int block = rnd.nextInt(lev_block);//68 70 72 34 35 36
@@ -368,7 +427,7 @@ public class Board extends JFrame {
 		}
 	}
 
-	protected void moveDown() { //구조를 조금 바꿈 갈수잇는지 먼저 확인후에 갈수있으면 지우고 이동
+	protected void moveDown() throws IOException { //구조를 조금 바꿈 갈수잇는지 먼저 확인후에 갈수있으면 지우고 이동
 		if(!isBlocked('d')) {
 			eraseCurr();
 			y++;
@@ -422,7 +481,7 @@ public class Board extends JFrame {
 			timer.start();
 		}
 	}
-	protected void harddrop(){
+	protected void harddrop() throws IOException {
 		eraseCurr();
 		while(!isBlocked('d'))
 			y++;
@@ -528,30 +587,33 @@ public class Board extends JFrame {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			switch(e.getKeyCode()) {
-			case KeyEvent.VK_DOWN:
-				moveDown();
-				drawBoard();
-				break;
-			case KeyEvent.VK_RIGHT:
-				moveRight();
-				drawBoard();
-				break;
-			case KeyEvent.VK_LEFT:
-				moveLeft();
-				drawBoard();
-				break;
-			case KeyEvent.VK_UP:
-				rotateblock();
-				//System.out.println("width : " + curr.width() + " height : " + curr.height());
-				drawBoard();
-				break;
-			case 68:
-				harddrop();
-				break;
-			case KeyEvent.VK_ESCAPE:
-				pause();
-				break;
+			try {
+				if(e.getKeyCode() == key_left) {
+					moveLeft();
+					drawBoard();
+				}
+				else if(e.getKeyCode() == key_right) {
+					moveRight();
+					drawBoard();
+				}
+				else if(e.getKeyCode() == key_rotate) {
+					rotateblock();
+					//System.out.println("width : " + curr.width() + " height : " + curr.height());
+					drawBoard();
+				}
+				else if(e.getKeyCode() == key_harddrop) {
+					harddrop();
+				}
+				else if(e.getKeyCode() == key_pause) {
+					pause();
+				}
+				else if(e.getKeyCode() == key_down) {
+					moveDown();
+					drawBoard();
+				}
+			}
+			catch(IOException ex) {
+				System.out.println(ex);
 			}
 		}
 
