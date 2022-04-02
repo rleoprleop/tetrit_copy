@@ -59,9 +59,6 @@ public class ScoreDataManager {
 
     public void addScoreData(String name, int score){
         JSONArray scoreData = readData();
-//            System.out.println(scoreData.toString());
-//            System.out.println(scoreData.size());
-           // JSONArray scoreData = new JSONArray();
         JSONObject data = new JSONObject();
         data.put(KEY_SCORE, score);
         data.put(KEY_NAME, name);
@@ -73,7 +70,7 @@ public class ScoreDataManager {
     public int getLastScore() {
         int score = 0;
         JSONArray scoreData = readData();
-        if(scoreData.size() <= 0) return 0;
+        if(scoreData.size() < 10) return 0;
 
         else {
             int lastIdx = scoreData.size() - 1;
@@ -84,7 +81,7 @@ public class ScoreDataManager {
 
     }
     public void fetchData (JSONArray scoreData){
-        JSONArray sortedData = new JSONArray();
+//        JSONArray sortedData = new JSONArray();
 
         List<JSONObject> jsonValues = new ArrayList<JSONObject>();
         for(int i = 0; i<scoreData.size(); i++) {
