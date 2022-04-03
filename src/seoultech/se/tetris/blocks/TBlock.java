@@ -1,5 +1,7 @@
 package seoultech.se.tetris.blocks;
 
+import seoultech.se.tetris.component.Board;
+
 import java.awt.Color;
 
 public class TBlock extends Block {
@@ -13,5 +15,8 @@ public class TBlock extends Block {
 			color= new Color(0xd5933e);
 		else
 			color = Color.MAGENTA;
+		if(item_mode && Board.getScore()>1){
+			setLineCleaner();
+		}
 	}
 }

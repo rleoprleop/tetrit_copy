@@ -1,15 +1,18 @@
 package seoultech.se.tetris.blocks;
 
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.Random;
 
 public abstract class Block {
-		
+
 	protected int[][] shape;
 	protected Color color;
 	protected int centermoved_x;
 	protected int centermoved_y;
 	protected static boolean color_weak = true;
-	
+	protected static boolean item_mode = true;
+
 	public Block() {
 		shape = new int[][]{ 
 				{1, 1}, 
@@ -43,7 +46,7 @@ public abstract class Block {
 			for(int j=0; j<rotate[i].length; j++)
 			{
 				rotate[i][j] = shape[height()-1-j][i];
-				if(rotate[i][j] == 2){
+				if(rotate[i][j] == 2 || rotate[i][j] == 12){
 					centermoved_y = (height() -1 -j -i);
 					centermoved_x = (i - j);
 				}
@@ -65,7 +68,7 @@ public abstract class Block {
 			for(int j=0; j<rotate[i].length; j++)
 			{
 				rotate[i][j] = shape[height()-1-j][i];
-				if(rotate[i][j] == 2){
+				if(rotate[i][j] == 2 || rotate[i][j] == 12){
 					centermoved_y = (height() -1 -j -i);
 					centermoved_x = (i - j);
 				}
@@ -90,4 +93,19 @@ public abstract class Block {
 	public boolean getColorWeak(){
 		return color_weak;
 	}
+
+	public void setLineCleaner(){
+		Random rn = new Random();
+		int h=rn.nextInt(height());
+		int w=rn.nextInt(width());
+		while(shape[h][w]==0){
+			h=rn.nextInt(height());
+			w=rn.nextInt(width());
+		}
+		shape[h][w]+=10;
+		System.out.println(Arrays.deepToString(shape));
+	}
+	public void setItemMode(boolean a){ item_mode=a;}
+
+	public boolean getItemMode(){return item_mode;	}
 }

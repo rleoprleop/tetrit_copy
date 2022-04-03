@@ -34,6 +34,7 @@ public class Board extends JFrame {
 	public static String BORDER_CHAR = "X";
 	public static String BLOCK_CHAR = "O";
 	public static String BLANK_CHAR = " ";
+	public static String LINE_CLEANER = "E";
 	public static final String win_BORDER_CHAR = "X";
 	public static final String win_BLOCK_CHAR = "O";
 	public static final String win_BLANK_CHAR = "     ";
@@ -66,13 +67,15 @@ public class Board extends JFrame {
 	private static final int completed_block = 2;
 	private static final int empty_block = 0;
 
-	int sprint=0;
+	private static int sprint=0;
 	private static final int SPMAX=900;
 
 	private static final int EASY = 72;
 	private static final int NORMAL = 70;
 	private static final int HARD = 68;
 	private static int lev_block = NORMAL; //난이도. easy 72 normal 70 hard 68
+
+
 
 
 	public Board(int x, int y) {
@@ -173,6 +176,8 @@ public class Board extends JFrame {
 		drawBoard();
 		timer.start();
 	}
+
+	public static int getScore(){return score;}
 
 	public void setLev_block(int a){
 		if(a==EASY)
@@ -357,16 +362,19 @@ public class Board extends JFrame {
 		placeBlock();
 	}
 
-	protected void eraseRow() {
+	protected void eraseRow() {//C => 무조건 지움, 한줄이 채워지면 지움
 
 		int lowest = y + curr.height() -1;
 		for(int i = lowest; i>=y; i--){
 			boolean canErase = true;
 			for(int j = 0; j < WIDTH; j++){
+				if(board[i][j]>10){
+					canErase=true;
+					break;
+				}
 				if(board[i][j] == 0)
 				{
 					canErase = false;
-					break;
 				}
 			}
 			if(canErase) {
@@ -496,12 +504,18 @@ public class Board extends JFrame {
 				//sb.append(BORDER_CHAR);
 				doc.insertString(doc.getLength(), BORDER_CHAR, styleSet);
 				for (int j = 0; j < board[i].length; j++) {
-					if (board[i][j] != 0) {
+					if(board[i][j]>10){
+						StyleConstants.setForeground(styleSet, color_board[i][j]);
+						doc.insertString(doc.getLength(), LINE_CLEANER, styleSet);
+						StyleConstants.setForeground(styleSet, Color.WHITE);
+					}
+					else if (board[i][j] != 0) {
 						StyleConstants.setForeground(styleSet, color_board[i][j]);
 						doc.insertString(doc.getLength(), BLOCK_CHAR, styleSet);
 						//sb.append(BLOCK_CHAR);
 						StyleConstants.setForeground(styleSet, Color.WHITE);
-					} else {
+					}
+					else {
 						doc.insertString(doc.getLength(), BLANK_CHAR, styleSet);
 						//sb.append(BLANK_CHAR);
 					}
@@ -518,6 +532,7 @@ public class Board extends JFrame {
 		pane.setStyledDocument(doc);
 		draw_next();
 		draw_score();
+//		System.out.println(Arrays.deepToString(board));
 	}
 
 	public void draw_score() {
@@ -538,9 +553,13 @@ public class Board extends JFrame {
 		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
 		for(int i=0; i < NEXT_HEIGHT; i++) {
 			for(int j=0; j < NEXT_WIDTH; j++) {
-				if(next_board[i][j] != 0) {
+				if(next_board[i][j]>10){
+					sb.append(LINE_CLEANER);
+				}
+				else if(next_board[i][j] != 0) {
 					sb.append(BLOCK_CHAR);
-				} else {
+				}
+				else {
 					sb.append(BLANK_CHAR);
 				}
 			}
