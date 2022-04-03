@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class EndGame extends JFrame {
     private JPanel scorePane, scoreBoardPane, textPane, menuPane;
@@ -93,7 +94,11 @@ public class EndGame extends JFrame {
                 disPose();
             }
             else if(restart.equals(e.getSource())){ // restartButton pressed
-                new Board(getLocation().x, getLocation().y);
+                try {
+                    new Board(getLocation().x, getLocation().y);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
                 disPose();
             }
             else { //addButton pressed
