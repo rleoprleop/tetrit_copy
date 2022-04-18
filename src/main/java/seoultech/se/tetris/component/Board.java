@@ -380,6 +380,7 @@ public class Board extends JFrame {
 	protected void eraseRow() {
 
 		int lowest = y + curr.height() -1;
+		boolean earse = false;
 		for(int i = lowest; i>=y; i--){
 			boolean canErase = true;
 			for(int j = 0; j < WIDTH; j++){
@@ -391,15 +392,19 @@ public class Board extends JFrame {
 			}
 			if(canErase) {
 				score += 1;
+				earse = true;
 				sprint+=20;
 				for(int j = 0; j<WIDTH; j++) {
 					board[i][j] = 0;
 				}
 			}
 		}
+//		System.out.println("------------------------");
 		for(int i = lowest; i>=0; i--){
 			down(i);
+//			System.out.println(i);
 		}
+		if(earse)  System.out.println(lowest);
 	}
 
 	protected void down(int row) {

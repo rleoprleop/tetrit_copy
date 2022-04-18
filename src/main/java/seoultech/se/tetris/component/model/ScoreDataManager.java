@@ -6,6 +6,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +19,9 @@ public class ScoreDataManager {
     private final String KEY_NAME = "이름";
     private final String KEY_ARR = "score";
     private final String FILEPATH = "src/main/java/seoultech/se/tetris/component/model/ScoreData.json";
-   // private final String FILEPATH = "seoultech/se/tetris/component/model/ScoreData.json";
+    private final String column[]={"순위","Player Name","Score"};
+
+    // private final String FILEPATH = "seoultech/se/tetris/component/model/ScoreData.json";
     private ScoreDataManager() {
 
     }
@@ -60,10 +64,12 @@ public class ScoreDataManager {
     public void addScoreData(String name, int score){
         JSONArray scoreData = readData();
         JSONObject data = new JSONObject();
+        if(scoreData.size() == 10){
+            scoreData.remove(9);
+        }
         data.put(KEY_SCORE, score);
         data.put(KEY_NAME, name);
         scoreData.add(data);
-
         fetchData(scoreData);
     }
 
@@ -107,38 +113,36 @@ public class ScoreDataManager {
         writeData(keyArr.toString());
     }
 
-//    public int getRowsFromTable(String name, int score){
-//        int idx = 0;
-//        try{
-//            JSONArray scoreData = readData();
-//            int scoreDataSize = scoreData.size();
-//
-//            for(int i = 0; i<scoreDataSize; i++){
-//                JSONObject element = (JSONObject)scoreData.get(i);
-//                int sc =Integer.parseInt(element.get(KEY_SCORE).toString());
-//                String str = element.get(KEY_NAME).toString();
-//                if(str == name && score == sc){
-//                    idx = i;
-//                    break;
-//                }
-//            }
-//
-//        } catch (IOException | ParseException e){
-//            e.printStackTrace();
-//        }
-//        return idx;
-//    }
-
-    public String[][] getStringData(){
+    public int getRowsFromTable(String name, int score){
+        int idx = 0;
         JSONArray scoreData = readData();
-        String stringData[][] = new String[scoreData.size()][3];
+        int scoreDataSize = scoreData.size();
+
+        for(int i = 0; i<scoreDataSize; i++){
+            JSONObject element = (JSONObject)scoreData.get(i);
+            int sc =Integer.parseInt(element.get(KEY_SCORE).toString());
+            String str = element.get(KEY_NAME).toString();
+            if(str == name && score == sc){
+                idx = i;
+                break;
+            }
+        }
+        return idx;
+    }
+
+    public Object[][] getObjectData(){
+        JSONArray scoreData = readData();
+        Object objectData[][] = new Object[scoreData.size()][3];
         for(int i = 0; i< scoreData.size(); i++){
             JSONObject element = (JSONObject) scoreData.get(i);
-            stringData[i][0] = Integer.toString(i+1);
-            stringData[i][1] = element.get(KEY_NAME).toString();
-            stringData[i][2] = element.get(KEY_SCORE).toString();
+            objectData[i][0] = Integer.toString(i+1);
+            objectData[i][1] = element.get(KEY_NAME).toString();
+            objectData[i][2] = element.get(KEY_SCORE).toString();
         }
-
-        return stringData;
+        return objectData;
+    }
+    public JTable getTable(){
+        JTable scoreTable = new JTable(getObjectData(), column);
+        return scoreTable;
     }
 }

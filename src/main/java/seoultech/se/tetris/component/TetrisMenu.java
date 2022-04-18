@@ -115,7 +115,8 @@ public class TetrisMenu extends JFrame {
                 this.dispose();
                 break;
             case 1: //score board class
-                new ScoreBoard(this.getLocation().x, this.getLocation().y);
+//                new ScoreBoard(this.getLocation().x, this.getLocation().y);
+                new EndGame(this.getLocation().x, this.getLocation().y, 50);
                 this.dispose();
                 break;
             case 2: //setting class
@@ -159,7 +160,6 @@ public class TetrisMenu extends JFrame {
                     break;
 
                 default:
-                    System.out.println("error");
                     JOptionPane errorPane = new JOptionPane();
                     errorPane.showMessageDialog(null, "up, down, enter만 누를수 있습니다.","KEY_ERROR", JOptionPane.WARNING_MESSAGE);
 

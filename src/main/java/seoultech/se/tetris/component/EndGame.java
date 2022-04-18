@@ -3,6 +3,7 @@ package seoultech.se.tetris.component;
 import seoultech.se.tetris.component.model.ScoreDataManager;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,10 @@ public class EndGame extends JFrame {
     private JTextField writeName;
     private JButton restart, terminate, addButton;
     private int score;
+    private JScrollPane scrollPane;
+    private JTable scoreTable;
+    private boolean isAdd = false;
+
     public EndGame(int x, int y, int score) {
         this.score = score;
         this.setLocation(x,y);
@@ -22,13 +27,9 @@ public class EndGame extends JFrame {
         setScoreBoardPane();
         setMenuPane();
 
-
         this.add(scorePane, BorderLayout.NORTH);
         this.add(scoreBoardPane, BorderLayout.CENTER);
         this.add(menuPane, BorderLayout.SOUTH);
-//        this.add(textPane);
-//        this.add(menuPane);
-
         setTitle("게임 종료");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
@@ -43,15 +44,15 @@ public class EndGame extends JFrame {
 
     void setScoreBoardPane(){
         scoreBoardPane = new JPanel(new FlowLayout());
-        // scoreBoard에 textpane추가
-        JTable scoreTable = ScoreBoard.getScoreTable();
-        JScrollPane scrollPane = new JScrollPane(scoreTable);
-        JButton demo = new JButton("여기에 scoreboard들어와야함");
-        scrollPane.setPreferredSize(new Dimension(this.getWidth()-10, this.getHeight()/2));
 
-        setTextPane();
+        scoreTable = ScoreDataManager.getInstance().getTable();
+        scrollPane = new JScrollPane(scoreTable);
+        scrollPane.setPreferredSize(new Dimension(this.getWidth() - 10, this.getHeight() / 2));
         scoreBoardPane.add(scrollPane);
-        scoreBoardPane.add(textPane);
+
+        if(isAdd == false) {
+            setTextPane();
+        }
     }
 
     void setTextPane(){
@@ -61,6 +62,7 @@ public class EndGame extends JFrame {
             writeName = new JTextField(27);
 
             addButton = new JButton("등록");
+            addButton.addActionListener(listner);
 
             textPane.add(writeName);
             textPane.add(addButton);
@@ -86,9 +88,11 @@ public class EndGame extends JFrame {
         menuPane.add(restart);
         menuPane.add(terminate);
     }
+
     ActionListener listner = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            System.out.println("action performed");
             if(terminate.equals(e.getSource())){ //terminateButton pressed
                 new TetrisMenu(getLocation().x, getLocation().y);
                 disPose();
@@ -101,13 +105,31 @@ public class EndGame extends JFrame {
                 }
                 disPose();
             }
-            else { //addButton pressed
+            else if (addButton.equals(e.getSource())){ //addButton pressed
+                System.out.println("add button pressed");
 
+                String trimName = writeName.getText().trim();
+                if(trimName.equals("")){
+                    JOptionPane errorPane = new JOptionPane();
+                    errorPane.showMessageDialog(null, "적어도 하나 입력해야 합니다..","KEY_ERROR", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    ScoreDataManager.getInstance().addScoreData(writeName.getText(), score);
+                    scoreBoardPane.removeAll();
+                    isAdd = true;
+                    setScoreBoardPane();
+
+                    getThis().add(scoreBoardPane,BorderLayout.CENTER);
+                    scoreBoardPane.revalidate();
+                    scoreBoardPane.repaint();
+                }
             }
         }
     };
     void disPose() {
         this.dispose();
+    }
+     private JFrame getThis(){
+        return this;
     }
 
 }
