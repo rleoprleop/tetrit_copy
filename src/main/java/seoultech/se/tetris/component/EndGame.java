@@ -1,6 +1,9 @@
 package seoultech.se.tetris.component;
 
+import seoultech.se.tetris.component.model.ScoreDataManager;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,54 +13,65 @@ public class EndGame extends JFrame {
     private JPanel scorePane, scoreBoardPane, textPane, menuPane;
     private JTextField writeName;
     private JButton restart, terminate, addButton;
+    private int score;
+    private JScrollPane scrollPane;
+    private JTable scoreTable;
+    private boolean isAdd = false;
 
     public EndGame(int x, int y, int score) {
+        this.score = score;
         this.setLocation(x,y);
         this.setSize(600,500);
-        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
-        setScorePane(score);
+        this.setLayout(new BorderLayout());
+        setScorePane();
         setScoreBoardPane();
-        setTextPane();
         setMenuPane();
 
-
-        this.add(scorePane);
-        this.add(scoreBoardPane);
-        this.add(textPane);
-        this.add(menuPane);
-
+        this.add(scorePane, BorderLayout.NORTH);
+        this.add(scoreBoardPane, BorderLayout.CENTER);
+        this.add(menuPane, BorderLayout.SOUTH);
         setTitle("게임 종료");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
 
-    void setScorePane(int score) {
-        scorePane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    void setScorePane() {
+        scorePane = new JPanel(new FlowLayout());
         JLabel scoreLable = new JLabel(score+"점");
         scoreLable.setFont(scoreLable.getFont().deriveFont(30.f));
         scorePane.add(scoreLable);
     }
 
-
     void setScoreBoardPane(){
         scoreBoardPane = new JPanel(new FlowLayout());
-        // scoreBoard에 textpane추가
-        JPanel scoreBoard = ScoreBoard.tablePane;
-        JButton demo = new JButton("여기에 scoreboard들어와야함");
-        scoreBoard.setPreferredSize(new Dimension(this.getWidth()-20, this.getHeight()/2));
 
+        scoreTable = ScoreDataManager.getInstance().getTable();
+        scrollPane = new JScrollPane(scoreTable);
+        scrollPane.setPreferredSize(new Dimension(this.getWidth() - 10, this.getHeight() / 2));
+        scoreBoardPane.add(scrollPane);
 
-        scoreBoardPane.add(scoreBoard);
+        if(isAdd == false) {
+            setTextPane();
+        }
     }
 
     void setTextPane(){
-        textPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        writeName = new JTextField(27);
+        textPane = new JPanel(new FlowLayout());
 
-        addButton = new JButton("등록");
+        if(score > ScoreDataManager.getInstance().getLastScore()){
+            writeName = new JTextField(27);
 
-        textPane.add(writeName);
-        textPane.add(addButton);
+            addButton = new JButton("등록");
+            addButton.addActionListener(listner);
+
+            textPane.add(writeName);
+            textPane.add(addButton);
+        }
+        else {
+            JLabel lable = new JLabel("아쉽게도 10위 안에 못들었네요");
+            textPane.add(lable);
+        }
+        scoreBoardPane.add(textPane);
     }
 
     void setMenuPane() {
@@ -74,16 +88,16 @@ public class EndGame extends JFrame {
         menuPane.add(restart);
         menuPane.add(terminate);
     }
+
     ActionListener listner = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            System.out.println("action performed");
             if(terminate.equals(e.getSource())){ //terminateButton pressed
-                disPose();
                 new TetrisMenu(getLocation().x, getLocation().y);
                 disPose();
             }
             else if(restart.equals(e.getSource())){ // restartButton pressed
-                System.out.println("이것 호출");
                 try {
                     new Board(getLocation().x, getLocation().y);
                 } catch (IOException ioException) {
@@ -91,13 +105,31 @@ public class EndGame extends JFrame {
                 }
                 disPose();
             }
-            else { //addButton pressed
+            else if (addButton.equals(e.getSource())){ //addButton pressed
+                System.out.println("add button pressed");
 
+                String trimName = writeName.getText().trim();
+                if(trimName.equals("")){
+                    JOptionPane errorPane = new JOptionPane();
+                    errorPane.showMessageDialog(null, "적어도 하나 입력해야 합니다..","KEY_ERROR", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    ScoreDataManager.getInstance().addScoreData(writeName.getText(), score);
+                    scoreBoardPane.removeAll();
+                    isAdd = true;
+                    setScoreBoardPane();
+
+                    getThis().add(scoreBoardPane,BorderLayout.CENTER);
+                    scoreBoardPane.revalidate();
+                    scoreBoardPane.repaint();
+                }
             }
         }
     };
     void disPose() {
         this.dispose();
+    }
+     private JFrame getThis(){
+        return this;
     }
 
 }
