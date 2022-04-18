@@ -29,7 +29,6 @@ public class TetrisMenu extends JFrame {
 
 
     public TetrisMenu(int x, int y) {
-
         JPanel back = new JPanel(){
             public void paintComponent(Graphics g){
                 g.drawImage(background.getImage(),0,0,null);
@@ -42,7 +41,7 @@ public class TetrisMenu extends JFrame {
         this.setLocation(x, y);
 //        this.setLayout(new GridLayout(2,1,10,0));
         //mainPanel = new JPanel();
-        displayGameName();
+        //displayGameName();
         setButton();
         keylistner = new MenuKeyListener();
         this.addKeyListener(keylistner);
@@ -50,8 +49,8 @@ public class TetrisMenu extends JFrame {
         menuButton.addKeyListener(keylistner);
         menuButton.setFocusable(true);
 
-        menuPane.setBounds(160,300,300,300);
-        back.add(menuPane);
+        menuPane.setBounds(100,280,300,300);
+        this.add(menuPane);
 
         this.getContentPane().add(back);
 
@@ -60,14 +59,14 @@ public class TetrisMenu extends JFrame {
         this.setVisible(true);
     }
 
-    void displayGameName(){
-        gameNamePane = new JPanel();
-        JLabel gameLable = new JLabel("SeoulTech SE Tetris");
-        gameLable.setFont(gameLable.getFont().deriveFont(40.0f));
-//        gameLable.setHorizontalAlignment(JLabel.CENTER);
-//        gameLable.setVerticalAlignment(JLabel.CENTER);
-        gameNamePane.add(gameLable);
-    }
+//    void displayGameName(){
+//        gameNamePane = new JPanel();
+//        JLabel gameLable = new JLabel("SeoulTech SE Tetris");
+//        gameLable.setFont(gameLable.getFont().deriveFont(40.0f));
+////        gameLable.setHorizontalAlignment(JLabel.CENTER);
+////        gameLable.setVerticalAlignment(JLabel.CENTER);
+//        gameNamePane.add(gameLable);
+//    }
 
     private Image changeImgSize(String path){
         ImageIcon img = new ImageIcon(path);
@@ -85,21 +84,22 @@ public class TetrisMenu extends JFrame {
         ImageIcon endgameImg = new ImageIcon("img/tetrisMenu/End_ac.png");
 
         menuList[0] = menuImg;
-        menuList[1] = settingImg;
-        menuList[2] = leaderImg;
+        menuList[1] = leaderImg;
+        menuList[2] = settingImg;
         menuList[3] = endgameImg;
 
         upLabel = new JLabel(upImg);
         downLabel = new JLabel(downImg);
 
-        menuPane = new JPanel(new GridLayout(3,1));
+        menuPane = new JPanel();
+        menuPane.setLayout(new GridLayout(3,1));
 
         //menuButton = new JButton((menuList[menuNum]));
         menuButton = new JLabel(menuImg);
-        menuButton.setSize(new Dimension(170,60));
-        menuButton.setBounds(160,300,170,60);
+        menuButton.setOpaque(false);
+        menuButton.setSize(new Dimension(180,60));
+        menuButton.setBounds(160,300,menuButton.getWidth(),menuButton.getHeight());
 
-        menuButton.setOpaque(true);
         //menuButton.setFont(menuButton.getFont().deriveFont(30.0f));
         menuPane.add(upLabel);
         menuPane.add(menuButton);

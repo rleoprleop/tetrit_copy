@@ -18,18 +18,44 @@ public class Setting extends JFrame {
     private JButton backButton;
     private JButton level, colorWeak, display, keySetting, reset;
     private Data settingdata;
+    private ImageIcon background = new ImageIcon("img/Background.png");
 
     public Setting(int x, int y) {
-        this.setSize(500, 600);
+
+        JPanel back = new JPanel(){
+            public void paintComponent(Graphics g){
+                g.drawImage(background.getImage(),0,0,null);
+                setOpaque(false);
+                super.paintComponent(g);
+            }
+        };
+        this.setFocusable(true);
+        this.setSize(510, 635);
         this.setLocation(x, y);
-        this.setLayout(new BorderLayout(25, 25));
+
+        //test
+        JPanel testpn = new JPanel();
+        JButton testbt = new JButton("back");
+        testpn.setLayout(null);
+        testpn.setOpaque(false);
+        testbt.setSize(100,60);
+        testbt.setOpaque(false);
+        testbt.setBounds(10,10,100,50);
+        testpn.add(testbt);
+        this.add(testpn);
+
+
+
+
+
+
 
         setbackButtonPanel();
         setMenuPanel();
 
-        this.add(backButtonPanel, BorderLayout.NORTH);
-        this.add(menuPanel, BorderLayout.CENTER);
-
+        //this.add(backButtonPanel);
+        //back.add(menuPanel, BorderLayout.CENTER);
+        this.getContentPane().add(back);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
@@ -37,6 +63,8 @@ public class Setting extends JFrame {
     private void setbackButtonPanel() {
         backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         backButton = new JButton("back");
+        backButtonPanel.setBounds(10,10,backButton.getWidth(),backButton.getHeight());
+        backButtonPanel.setOpaque(false);
 
         backButton.addActionListener(listner);
         backButtonPanel.add(backButton);
@@ -51,16 +79,16 @@ public class Setting extends JFrame {
 
     private void setMenuPanel() {
         menuPanel = new JPanel(new GridLayout(5, 1, 5, 0));
-        ImageIcon level_activate = new ImageIcon(changeImgSize("img/Level_activate.png"));
-        ImageIcon level_disabled = new ImageIcon(changeImgSize("img/Level_disabled.png"));
-        ImageIcon colorweak_activate = new ImageIcon(changeImgSize("img/Colorweak_activate.png"));
-        ImageIcon colorweak_disabled = new ImageIcon(changeImgSize("img/Colorweak_disabled.png"));
-        ImageIcon display_activate = new ImageIcon(changeImgSize("img/Display_activate.png"));
-        ImageIcon display_disabled = new ImageIcon(changeImgSize("img/Display_disabled.png"));
-        ImageIcon keymapping_activate = new ImageIcon(changeImgSize("img/Keymapping_activate.png"));
-        ImageIcon keymapping_disabled = new ImageIcon(changeImgSize("img/Keymapping_disabled.png"));
-        ImageIcon reset_activate = new ImageIcon(changeImgSize("img/Reset_activate.png"));
-        ImageIcon reset_disabled = new ImageIcon(changeImgSize("img/Reset_disabled.png"));
+        ImageIcon level_activate = new ImageIcon(changeImgSize("img/settingMenu/Level_activate.png"));
+        ImageIcon level_disabled = new ImageIcon(changeImgSize("img/settingMenu/Level_disabled.png"));
+        ImageIcon colorweak_activate = new ImageIcon(changeImgSize("img/settingMenu/Colorweak_activate.png"));
+        ImageIcon colorweak_disabled = new ImageIcon(changeImgSize("img/settingMenu/Colorweak_disabled.png"));
+        ImageIcon display_activate = new ImageIcon(changeImgSize("img/settingMenu/Display_activate.png"));
+        ImageIcon display_disabled = new ImageIcon(changeImgSize("img/settingMenu/Display_disabled.png"));
+        ImageIcon keymapping_activate = new ImageIcon(changeImgSize("img/settingMenu/Keymapping_activate.png"));
+        ImageIcon keymapping_disabled = new ImageIcon(changeImgSize("img/settingMenu/Keymapping_disabled.png"));
+        ImageIcon reset_activate = new ImageIcon(changeImgSize("img/settingMenu/Reset_activate.png"));
+        ImageIcon reset_disabled = new ImageIcon(changeImgSize("img/settingMenu/Reset_disabled.png"));
 
         JPanel levelPanel = new JPanel();
         level = new JButton(level_disabled);
@@ -68,6 +96,7 @@ public class Setting extends JFrame {
         level.setBorderPainted(false);
         level.setPreferredSize(new Dimension(180, 60));
         level.addActionListener(listner);
+        level.setOpaque(false);
         levelPanel.add(level);
 
         JPanel colorWeakPanel = new JPanel();
@@ -76,6 +105,7 @@ public class Setting extends JFrame {
         colorWeak.setBorderPainted(false);
         colorWeak.setPreferredSize(new Dimension(180, 60));
         colorWeak.addActionListener(listner);
+        colorWeak.setOpaque(false);
         colorWeakPanel.add(colorWeak);
 
         JPanel displayPanel = new JPanel();
@@ -84,6 +114,7 @@ public class Setting extends JFrame {
         display.setBorderPainted(false);
         display.setPreferredSize(new Dimension(180, 60));
         display.addActionListener(listner);
+        display.setOpaque(false);
         displayPanel.add(display);
 
         JPanel keySettingPanel = new JPanel();
@@ -92,6 +123,7 @@ public class Setting extends JFrame {
         keySetting.setBorderPainted(false);
         keySetting.setPreferredSize(new Dimension(180, 60));
         keySetting.addActionListener(listner);
+        keySetting.setOpaque(false);
         keySettingPanel.add(keySetting);
 
         JPanel resetPanel = new JPanel();
@@ -100,6 +132,7 @@ public class Setting extends JFrame {
         reset.setBorderPainted(false);
         reset.setPreferredSize(new Dimension(180, 60));
         reset.addActionListener(listner);
+        reset.setOpaque(false);
         resetPanel.add(reset);
 
         menuPanel.add(levelPanel);
