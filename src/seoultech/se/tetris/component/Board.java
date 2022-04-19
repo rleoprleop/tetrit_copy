@@ -13,14 +13,7 @@ import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.text.*;
 
-import seoultech.se.tetris.blocks.Block;
-import seoultech.se.tetris.blocks.IBlock;
-import seoultech.se.tetris.blocks.JBlock;
-import seoultech.se.tetris.blocks.LBlock;
-import seoultech.se.tetris.blocks.OBlock;
-import seoultech.se.tetris.blocks.SBlock;
-import seoultech.se.tetris.blocks.TBlock;
-import seoultech.se.tetris.blocks.ZBlock;
+import seoultech.se.tetris.blocks.*;
 
 
 public class Board extends JFrame {
@@ -55,12 +48,14 @@ public class Board extends JFrame {
 	private KeyListener playerKeyListener;
 	private SimpleAttributeSet styleSet;
 	private Timer timer;
+	private Timer press_timer;
 	private Block curr;
 	private Block next_block;
 	private boolean ispaused = false;
 	int x = 3; //Default Position.
 	int y = 0;
 	private static int score = 0;
+	private static boolean press_check=false;
 
 	private static final int initInterval = 1000;
 	private static final int curr_block = 1;
@@ -159,6 +154,13 @@ public class Board extends JFrame {
 			}
 		});
 
+		press_timer = new Timer(200, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pressDown();
+				drawBoard();
+			}
+		});
 
 		//Initialize board for the game.
 		board = new int[HEIGHT][WIDTH];
@@ -194,6 +196,9 @@ public class Board extends JFrame {
 
 	private Block getRandomBlock() {
 		//testRandomBlock();
+		if(score>0){
+			return new Press();
+		}
 		Random rnd = new Random();
 		int block = rnd.nextInt(lev_block);//68 70 72 34 35 36
 		if(block<10)
@@ -246,6 +251,10 @@ public class Board extends JFrame {
 					board[y + j][x + i] = curr.getShape(i, j);
 					color_board[y+j][x+i] = curr.getColor();
 				}
+				else if(curr.getShape(0,0)==6){
+					board[y + j][x + i] = curr.getShape(i, j);
+					color_board[y+j][x+i] = curr.getColor();
+				}
 			}
 		}
 		placeNextBlock();
@@ -275,6 +284,8 @@ public class Board extends JFrame {
 	}
 
 	private boolean isBlocked(char move){ //블럭이 갈 수 있는지 확인하는 함수('d' : 아래, 'r' : 오른쪽, 'l' : 왼쪽)
+		if(press_check)
+			return true;
 		if(move == 'd') { //down
 			if(y + curr.height() < HEIGHT) {
 				for (int i = x; i < x + curr.width(); i++) {
@@ -321,6 +332,8 @@ public class Board extends JFrame {
 			else return true;
 		}
 		else if(move == 't') { //돌릴 수 있는지 확인
+			if(curr.getShape(0,0)==6)
+				return true;
 			curr.rotate();
 			int tmpX = x + curr.getCentermovedX();
 			int tmpY = y + curr.getCentermovedY();
@@ -328,7 +341,7 @@ public class Board extends JFrame {
 				//System.out.println("IN!!");
 				for(int i=tmpY; i<tmpY+curr.height(); i++) {
 					for (int j = tmpX; j < tmpX + curr.width(); j++) {
-						if (board[i][j] != 0 && curr.getShape(j - tmpX, i - tmpY) != 0) {
+						if(board[i][j] != 0 && curr.getShape(j - tmpX, i - tmpY) != 0) {
 							curr.rotate();
 							curr.rotate();
 							curr.rotate();
@@ -395,7 +408,36 @@ public class Board extends JFrame {
 
 	}
 
-	protected void down(int row) {
+	protected void pressDown(){
+		press_check=true;
+		if(y + curr.height() < HEIGHT) {
+			eraseCurr();
+			y++;
+		}
+		else{
+			press_check=false;
+			press_timer.stop();
+			placeBlock();
+			for(int i = y; i<y+curr.height(); i++) {
+				for (int j = 0; j < WIDTH; j++) {
+					if(board[i][j]==6){
+						board[i][j] = 0;
+					}
+				}
+			}
+			drawBoard();
+			timer.start();
+			curr = next_block;
+			next_block = getRandomBlock();
+			x = 3;
+			y = 0;
+
+		}
+		placeBlock();
+		drawBoard();
+	}
+
+	protected void down(int row) {//블럭을 아래로 내림
 		boolean canDown = true;
 		boolean haveBlock = false;
 		int swapRow = row + 1;
@@ -425,6 +467,11 @@ public class Board extends JFrame {
 			eraseCurr();
 			y++;
 		}
+		else if(isBlocked('d')&&curr.getShape(0,0)==6){
+			placeBlock();
+			timer.stop();
+			press_timer.start();
+		}
 		else {
 			int combo = score;
 			placeBlock();
@@ -440,6 +487,7 @@ public class Board extends JFrame {
 				reset();
 			}
 		}
+//		System.out.println(x+"and"+y);
 		placeBlock();
 		drawBoard();
 	}
@@ -509,6 +557,11 @@ public class Board extends JFrame {
 						doc.insertString(doc.getLength(), LINE_CLEANER, styleSet);
 						StyleConstants.setForeground(styleSet, Color.WHITE);
 					}
+//					else if(board[i][j]==6){
+//						StyleConstants.setForeground(styleSet, color_board[i][j]);
+//						doc.insertString(doc.getLength(), BLOCK_CHAR, styleSet);
+//						StyleConstants.setForeground(styleSet, Color.WHITE);
+//					}
 					else if (board[i][j] != 0) {
 						StyleConstants.setForeground(styleSet, color_board[i][j]);
 						doc.insertString(doc.getLength(), BLOCK_CHAR, styleSet);
