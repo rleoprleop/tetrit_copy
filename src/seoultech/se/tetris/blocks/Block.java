@@ -1,6 +1,7 @@
 package seoultech.se.tetris.blocks;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -13,7 +14,7 @@ public abstract class Block {
 	protected static boolean color_weak = true;
 	protected static boolean item_mode = true;
 
-	public Block() {
+	public Block() throws IOException {
 		shape = new int[][]{ 
 				{1, 1}, 
 				{1, 1}
