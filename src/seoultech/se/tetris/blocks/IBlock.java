@@ -3,11 +3,10 @@ package seoultech.se.tetris.blocks;
 import seoultech.se.tetris.component.Board;
 
 import java.awt.*;
-import java.io.IOException;
 
 public class IBlock extends Block {
 	
-	public IBlock() throws IOException {
+	public IBlock() {
 		shape = new int[][] { 
 			{1, 2, 1, 1}
 		};

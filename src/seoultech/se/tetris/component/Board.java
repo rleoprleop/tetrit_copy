@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Random;
@@ -74,7 +73,7 @@ public class Board extends JFrame {
 
 
 
-	public Board(int x, int y) throws IOException {
+	public Board(int x, int y) {
 		super("SeoulTech SE Tetris");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500, 600);

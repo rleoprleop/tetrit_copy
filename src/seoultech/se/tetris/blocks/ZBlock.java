@@ -3,11 +3,10 @@ package seoultech.se.tetris.blocks;
 import seoultech.se.tetris.component.Board;
 
 import java.awt.Color;
-import java.io.IOException;
 
 public class ZBlock extends Block {
 	
-	public ZBlock() throws IOException {
+	public ZBlock() {
 		shape = new int[][] { 
 			{1, 1, 0},
 			{0, 1, 1}
